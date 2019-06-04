@@ -1,5 +1,6 @@
 package com.lock.Thread;
 
+import com.lock.Constant;
 import com.lock.LockType.LockType;
 
 public class ReadThread extends Thread {
@@ -7,16 +8,17 @@ public class ReadThread extends Thread {
 	LockType test;
 	int num;
 
-	public ReadThread(int id, LockType test, int executeTimes) {
+	public ReadThread(int id, LockType test) {
 		this.id = id;
 		this.test = test;
-		num = executeTimes;
+		num = Constant.NUM_OPERATE;
 	}
 
+	@Override
 	public void run() {
 		int index;
-		for (int i = 0; i < num; i++) {
-			index = id * num + i;
+		for (int i = 0; i < Constant.NUM_OPERATE; i++) {
+			index = i;
 			test.get(index);
 		}
 	}

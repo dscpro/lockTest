@@ -5,14 +5,13 @@ import java.util.TreeSet;
 import java.util.concurrent.locks.StampedLock;
 
 public class SetStampedLockType extends SetLockType {
-	StampedLock sl;
+	StampedLock sl = new StampedLock();
 
 	public SetStampedLockType() {
 	}
 
 	public SetStampedLockType(TreeSet<Integer> myset) {
 		this.myset = myset;
-		sl = new StampedLock();
 	}
 
 	public void iterator() {

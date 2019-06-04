@@ -5,14 +5,13 @@ import java.util.List;
 
 public class ListStampedLockType extends ListLockType {
 
-	StampedLock sl;
+	StampedLock sl = new StampedLock();
 
 	public ListStampedLockType() {
 	}
 
 	public ListStampedLockType(List myList) {
 		this.list = myList;
-		sl = new StampedLock();
 	}
 
 	public Object get(int index) {
@@ -25,6 +24,7 @@ public class ListStampedLockType extends ListLockType {
 	}
 
 	public boolean insert(Object newValue) {
+
 		long stamp = sl.writeLock();
 		try {
 			return list.add(newValue);

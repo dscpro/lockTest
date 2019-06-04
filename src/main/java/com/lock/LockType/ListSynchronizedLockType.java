@@ -2,11 +2,11 @@ package com.lock.LockType;
 
 import java.util.List;
 
-public class ListSynchronizedType extends ListLockType {
-	public ListSynchronizedType() {
+public class ListSynchronizedLockType extends ListLockType {
+	public ListSynchronizedLockType() {
 	}
 
-	public ListSynchronizedType(List myList) {
+	public ListSynchronizedLockType(List myList) {
 		this.list = myList;
 	}
 

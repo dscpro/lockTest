@@ -1,6 +1,6 @@
 package com.lock.LockType;
 
-public class ArrayLockType implements LockType {
+public class GroupLockType implements LockType {
 
 	protected int[] intarray;
 

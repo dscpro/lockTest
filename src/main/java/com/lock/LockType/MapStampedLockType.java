@@ -4,14 +4,13 @@ import java.util.Map;
 import java.util.concurrent.locks.StampedLock;
 
 public class MapStampedLockType extends MapLockType {
-	StampedLock sl;
+	StampedLock sl = new StampedLock();
 
 	public MapStampedLockType() {
 	}
 
 	public MapStampedLockType(Map<Integer, Integer> myMap) {
 		this.myMap = myMap;
-		sl = new StampedLock();
 	}
 
 	public Object get(Integer key) {
