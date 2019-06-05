@@ -16,7 +16,7 @@ public abstract class TestSave {
 
 		TestInfo info = new TestInfo();
 		info.setNumThreads(5);
-		info.setExeTimes(5);
+		info.setNum_operate(5);
 		info.setOperate_type(2);
 		info.setWasteTime(56);
 		info.setLock_type(0);

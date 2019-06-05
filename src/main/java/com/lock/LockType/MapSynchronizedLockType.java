@@ -2,11 +2,11 @@ package com.lock.LockType;
 
 import java.util.Map;
 
-public class MapSynchroizedLockType extends MapLockType {
-	public MapSynchroizedLockType() {
+public class MapSynchronizedLockType extends MapLockType {
+	public MapSynchronizedLockType() {
 	}
 
-	public MapSynchroizedLockType(Map<Integer, Integer> myMap) {
+	public MapSynchronizedLockType(Map<Integer, Integer> myMap) {
 		this.myMap = myMap;
 	}
 

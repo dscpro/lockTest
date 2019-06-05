@@ -3,7 +3,7 @@ package com.lock;
 public class TestInfo {
 	int numThreads;
 	int readNum;
-	int exeTimes;
+	int num_operate;
 	int structure_type;
 	int lock_type;
 	int operate_type;
@@ -13,11 +13,11 @@ public class TestInfo {
 	public TestInfo() {
 	}
 
-	public TestInfo(int numThreads, int readNum, int exeTimes, int structure_type,int operate_structure_type, int lock_type,int operate_type) {
+	public TestInfo(int numThreads, int readNum, int num_operate, int structure_type,int operate_structure_type, int lock_type,int operate_type) {
 		super();
 		this.numThreads = numThreads;
 		this.readNum = readNum;
-		this.exeTimes = exeTimes;
+		this.num_operate = num_operate;
 		this.structure_type = structure_type;
 		this.operate_structure_type=operate_structure_type;
 		this.lock_type = lock_type;
@@ -40,12 +40,12 @@ public class TestInfo {
 		this.readNum = readNum;
 	}
 
-	public int getExeTimes() {
-		return exeTimes;
+ 	public int getNum_operate() {
+		return num_operate;
 	}
 
-	public void setExeTimes(int exeTimes) {
-		this.exeTimes = exeTimes;
+	public void setNum_operate(int num_operate) {
+		this.num_operate = num_operate;
 	}
 
 	public int getStructure_type() {

@@ -13,15 +13,16 @@ public class ThreadStart {
 	public static void testLock(TestInfo testinfo, LockType test) throws IOException {
 		int numThreads = testinfo.getNumThreads();
 		int readNum = testinfo.getReadNum();
-		int exeTimes = testinfo.getExeTimes();
-		String info = "When Thread_Num is:" + numThreads + ";Read_Num is:" + readNum + ";Exe_Num is:" + exeTimes + ";";
+		int exeNum = testinfo.getNum_operate();
+		String info = "When Thread_Num is:" + numThreads + ";Read_Num is:" + readNum + ";Op_Num is:" + exeNum + ";";
 
-		long startTime = System.currentTimeMillis();
+		
 		log.info(test.getClass().getSimpleName() + "++++start test++++");
 
 		Thread[] rd = new ReadThread[readNum];
 		int writeNum = numThreads - readNum;
 		Thread[] wr = new WriteThread[writeNum];
+		long startTime = System.currentTimeMillis();
 		for (int i = 0; i < readNum; i++) {
 			rd[i] = new ReadThread(i, test);
 			rd[i].start();
@@ -41,6 +42,6 @@ public class ThreadStart {
 		long endTime = System.currentTimeMillis();
 		log.info(info+test.getStruct() + " use " + test.getClass().getSimpleName()+" waste time is:" + (endTime - startTime) + "ms");
 		testinfo.setWasteTime(endTime - startTime);
-		//SaveToExcel.savetoexcel(testinfo);
+		SaveToExcel.savetoexcel(testinfo);
 	}
 }

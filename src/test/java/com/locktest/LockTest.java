@@ -15,15 +15,15 @@ public class LockTest {
 	@Test
 	public void testlock() throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
 		
-		int numThreads = Constant.NUM_THREADS[9];		
-		int readNum = Constant.NUM_READ[4];		
-		int exeTimes = Constant.NUM_OPERATE;		
+		int numThreads = Constant.NUM_THREADS[3];		
+		int readNum = Constant.NUM_READ[1];		
+		int num_operate = Constant.NUM_OPERATE;		
 		int structure_type = 1;
-		int lock_type = 2;
+		int lock_type = 0;
 		int operate_type = 0;		
-		int operate_structure_type=0;
+		int operate_structure_type=1;
 		
-		TestInfo info = new TestInfo(numThreads,readNum,exeTimes,structure_type,operate_structure_type,lock_type,operate_type);
+		TestInfo info = new TestInfo(numThreads,readNum,num_operate,structure_type,operate_structure_type,lock_type,operate_type);
 		
 		String listReadwritelocktypestr = "com.lock.LockType." + Constant.STRUCTURE_TYPE[structure_type]
 				+ Constant.LOCK_TYPE[lock_type];

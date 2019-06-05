@@ -12,7 +12,7 @@ public final class Constant {
 	/**
 	 * 执行次数
 	 */
-	public static Integer NUM_OPERATE =500;
+	public static Integer NUM_OPERATE =50;
 	//public static Integer[] NUM_WRITE ={1,5,10,50,100};
 	public static Integer[] NUM_EXETIMES ={5,50,100,1000,10000,100000};
 	/**
@@ -22,7 +22,7 @@ public final class Constant {
 	/**
 	 * 操作数据类型
 	 */
-	public static String[] OPERATE_STRUCTURE_TYPE={"Array","Linked","Hash","Tree","Group"};
+	public static String[] OPERATE_STRUCTURE_TYPE={"Group","Array","Linked","Hash","Tree"};
 	
 	/**
 	 * 锁类型
@@ -31,5 +31,5 @@ public final class Constant {
 	/**
 	 * 操作对象类型
 	 */
-	public static String[] OPERATE_TYPE={"int","string","boolean"};
+	public static String[] OPERATE_TYPE={"Int","String","Boolean"};
 }
