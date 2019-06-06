@@ -9,15 +9,15 @@
 读线程数为 0,1,5,50,100,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000
 执行次数为 5,50,100,1000,10000,100000
 ### 类说明
-####lock包：单机测试不同情况下的执行时间
+#### lock包：单机测试不同情况下的执行时间
 Constant.java:基础常量的定义
 DataBasic.java:初始化数据结构的数据
 LockTypePre.java:反射机制获得锁机制的操作对象+SetClass.java
 SaveToExcel.java:将实验结果保存到文件
 TestInfo.java:测试信息类
 ThreadStart.java:启动单次测试，打印结果并调用SaveToExcel中保存结果
-####lock.locktype包:根据不同数据结构定义不同锁机制操作类
-####lock.thread包:读写执行类
+#### lock.locktype包:根据不同数据结构定义不同锁机制操作类
+#### lock.thread包:读写执行类
 
 ## 二、案例设计与推荐
 ### 主要内容
@@ -29,12 +29,14 @@ ThreadStart.java:启动单次测试，打印结果并调用SaveToExcel中保存�
 2、将给出的案例与案例库中的所有案例进行一一对比，计算各个属性的相似度，最终得到相似度排名前几的案例及其相似度,并给出推荐。
 
 ### 类说明
-####cbr包:案例分析，案例检索，案例推荐
+#### cbr包:案例分析，案例检索，案例推荐
 Case.java:案例类包含基本信息
 CaseBasicMethod.java:定义基本的方法:初始化案例库等
-####cbr.create包:分析一中的结果，生成案例库（未完成）
-####cbr.recommend包:完成推荐
+#### cbr.create包:分析一中的结果，生成案例库（未完成）
+#### cbr.recommend包:完成推荐
 
 ## 三、测试
 ### lock.locktest包:
 ### lock.cbrtest包:
+![](https://github.com/dscpro/lockTest/src/main/resource/运行结果.png)  
+![](https://github.com/dscpro/lockTest/src/main/resource/推荐结果.png) 
