@@ -1,4 +1,4 @@
-package com.lock.LockType;
+package com.lock.locktype;
 
 import java.util.Iterator;
 import java.util.TreeSet;

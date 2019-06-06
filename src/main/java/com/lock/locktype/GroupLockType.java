@@ -1,4 +1,4 @@
-package com.lock.LockType;
+package com.lock.locktype;
 
 public class GroupLockType implements LockType {
 

@@ -3,9 +3,9 @@ package com.lock;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import com.lock.LockType.LockType;
-import com.lock.Thread.ReadThread;
-import com.lock.Thread.WriteThread;
+import com.lock.locktype.LockType;
+import com.lock.thread.ReadThread;
+import com.lock.thread.WriteThread;
 
 public class ThreadStart {
 	static Logger log = Logger.getLogger("");
@@ -42,6 +42,6 @@ public class ThreadStart {
 		long endTime = System.currentTimeMillis();
 		log.info(info+test.getStruct() + " use " + test.getClass().getSimpleName()+" waste time is:" + (endTime - startTime) + "ms");
 		testinfo.setWasteTime(endTime - startTime);
-		SaveToExcel.savetoexcel(testinfo);
+		//SaveToExcel.savetoexcel(testinfo);
 	}
 }

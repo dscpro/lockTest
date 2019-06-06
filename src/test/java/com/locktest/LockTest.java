@@ -9,7 +9,7 @@ import com.lock.DataBasic;
 import com.lock.LockTypePre;
 import com.lock.TestInfo;
 import com.lock.ThreadStart;
-import com.lock.LockType.LockType;
+import com.lock.locktype.LockType;
 
 public class LockTest {
 	@Test
@@ -25,7 +25,7 @@ public class LockTest {
 		
 		TestInfo info = new TestInfo(numThreads,readNum,num_operate,structure_type,operate_structure_type,lock_type,operate_type);
 		
-		String listReadwritelocktypestr = "com.lock.LockType." + Constant.STRUCTURE_TYPE[structure_type]
+		String listReadwritelocktypestr = "com.lock.locktype." + Constant.STRUCTURE_TYPE[structure_type]
 				+ Constant.LOCK_TYPE[lock_type];
 
 		LockType locktest = LockTypePre.preLock(listReadwritelocktypestr,

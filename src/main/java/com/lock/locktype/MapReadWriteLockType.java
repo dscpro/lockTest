@@ -1,4 +1,4 @@
-package com.lock.LockType;
+package com.lock.locktype;
 
 import java.util.Map;
 import java.util.concurrent.locks.Lock;

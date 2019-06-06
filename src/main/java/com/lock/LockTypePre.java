@@ -1,6 +1,6 @@
 package com.lock;
 
-import com.lock.LockType.LockType;
+import com.lock.locktype.LockType;
 
 public class LockTypePre {
 	public static LockType preLock(String locktypestr,Object operatetype) throws InstantiationException, IllegalAccessException, ClassNotFoundException{

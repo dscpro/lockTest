@@ -1,9 +1,10 @@
-package com.lock.LockType;
+package com.lock.locktype;
 
-import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
-public class MapLockType implements LockType {
-	protected Map<Integer, Integer> myMap;
+public class SetLockType implements LockType {
+	protected Set<Integer> myset;
 
 	@Override
 	public Object get(int index) {
@@ -17,12 +18,12 @@ public class MapLockType implements LockType {
 
 	@Override
 	public String getStruct() {
-		return myMap.getClass().getSimpleName().toString();
+		return myset.getClass().getSimpleName().toString();
 	}
 
 	@Override
 	public void setOperateType(Object obj) {
-		this.myMap = (Map<Integer, Integer>) obj;
+		this.myset = (TreeSet<Integer>) obj;
 	}
 
 }

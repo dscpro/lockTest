@@ -11,7 +11,7 @@ import com.lock.DataBasic;
 import com.lock.LockTypePre;
 import com.lock.TestInfo;
 import com.lock.ThreadStart;
-import com.lock.LockType.LockType;
+import com.lock.locktype.LockType;
 
 import junit.framework.TestCase;
 

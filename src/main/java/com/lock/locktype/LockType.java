@@ -1,4 +1,4 @@
-package com.lock.LockType;
+package com.lock.locktype;
 
 public interface LockType {	
 	public String getStruct();

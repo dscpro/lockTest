@@ -1,7 +1,7 @@
-package com.lock.Thread;
+package com.lock.thread;
 
 import com.lock.Constant;
-import com.lock.LockType.LockType;
+import com.lock.locktype.LockType;
 
 public class WriteThread extends Thread {
 	int id;
