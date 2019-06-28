@@ -38,5 +38,5 @@ CaseBasicMethod.java:定义基本的方法:初始化案例库等
 ## 三、测试
 ### lock.locktest包:
 ### lock.cbrtest包:
-![](https://github.com/dscpro/lockTest/src/main/resource/运行结果.png)  
-![](https://github.com/dscpro/lockTest/src/main/resource/推荐结果.png) 
+![](https://github.com/dscpro/lockTest/blob/master/src/main/resource/%E6%8E%A8%E8%8D%90%E7%BB%93%E6%9E%9C.png)  
+![](https://github.com/dscpro/lockTest/blob/master/src/main/resource/%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.png) 
