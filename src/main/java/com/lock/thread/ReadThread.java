@@ -8,16 +8,16 @@ public class ReadThread extends Thread {
 	LockType test;
 	int num;
 
-	public ReadThread(int id, LockType test) {
+	public ReadThread(int id, LockType test,int opnum) {
 		this.id = id;
 		this.test = test;
-		num = Constant.NUM_OPERATE;
+		this.num = opnum;
 	}
 
 	@Override
 	public void run() {
 		int index;
-		for (int i = 0; i < Constant.NUM_OPERATE; i++) {
+		for (int i = 0; i < num; i++) {
 			index = i;
 			test.get(index);
 		}

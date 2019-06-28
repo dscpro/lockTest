@@ -8,10 +8,10 @@ public class WriteThread extends Thread {
 	LockType test;
 	int num;
 
-	public WriteThread(int id, LockType test) {
+	public WriteThread(int id, LockType test,int opnum) {
 		this.id = id;
 		this.test = test;
-		num =  Constant.NUM_OPERATE;
+		this.num =  opnum;
 	}
 	@Override
 	public void run() {

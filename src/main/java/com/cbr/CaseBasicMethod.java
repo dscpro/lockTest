@@ -14,8 +14,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 
 public class CaseBasicMethod {
-	public static ArrayList<Case> getCaseDatabases() {
-		ArrayList<Case> casedatabases = new ArrayList<Case>();
+	public static ArrayList<CaseRec> getCaseDatabases() {
+		ArrayList<CaseRec> casedatabases = new ArrayList<CaseRec>();
 		HSSFWorkbook workbook = null;
 		File file = new File("src\\main\\resource\\caseresults.xls");
 		try {
@@ -28,7 +28,7 @@ public class CaseBasicMethod {
 		HSSFSheet sheet = (HSSFSheet) workbook.getSheet("Sheet1");
 
 		for (int index = 1; index <= sheet.getLastRowNum(); index++) {
-			Case casetest = new Case();
+			CaseRec casetest = new CaseRec();
 			Row row = sheet.getRow(index);
 			// System.out.println(row.getCell(1).getNumericCellValue());
 			casetest.setLock_type((int) row.getCell(0).getNumericCellValue());
@@ -44,7 +44,7 @@ public class CaseBasicMethod {
 		return casedatabases;
 	}
 
-	public static double CaseAttributeSimilarity(Case c, Case userCase, String attribute) {
+	public static double CaseAttributeSimilarity(CaseRec c, CaseRec userCase, String attribute) {
 		double similarity = 0.0;
 		int caseType = 0;
 		int userType = 0;
@@ -65,7 +65,7 @@ public class CaseBasicMethod {
 	}
 
 	public static HashMap<String, Integer> constructTypeHashMap() {
-		HashMap<String, Integer> result = new HashMap<>();
+		HashMap<String, Integer> result = new HashMap<String, Integer>();
 		result.put("city", 0);
 		result.put("education", 1);
 		result.put("language", 2);

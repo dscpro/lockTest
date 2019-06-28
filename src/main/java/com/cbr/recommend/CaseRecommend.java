@@ -3,15 +3,16 @@ package com.cbr.recommend;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import com.cbr.Case;
+import com.cbr.CaseRec;
 import com.cbr.CaseBasicMethod;
 
 public class CaseRecommend {
 	public int numTopCases = 3;
-	public ArrayList<Case> casedatabases = CaseBasicMethod.getCaseDatabases();
-	public HashMap<String, Integer> weights = new HashMap<>();
+	public ArrayList<CaseRec> casedatabases = CaseBasicMethod.getCaseDatabases();
+	public HashMap<String, Integer> weights = new HashMap<String, Integer>();
 
 	public void analysis() {
 
@@ -23,19 +24,19 @@ public class CaseRecommend {
 	 * @param searchcase
 	 * @return 案例及其相似度
 	 */
-	public ArrayList<Map.Entry<Double, Case>> retrieval(Case searchcase) {
-		TreeMap<Double, Case> simResults = new TreeMap<>();
-		ArrayList<Map.Entry<Double, Case>> results = new ArrayList<>();
+	public ArrayList<Map.Entry<Double, CaseRec>> retrieval(CaseRec searchcase) {
+		TreeMap<Double, CaseRec> simResults = new TreeMap<Double, CaseRec>();
+		ArrayList<Map.Entry<Double, CaseRec>> results = new ArrayList<Entry<Double, CaseRec>>();
 		constructWeights();
 		double increment = 0.000001;
-		for (Case c : casedatabases) {
+		for (CaseRec c : casedatabases) {
 			double sim = calculateSimilarity(c, searchcase);
 			sim += increment;
 			increment += 0.000001;
 			simResults.put(sim, c);
 		}
 		for (int i = 0; i < numTopCases; i++) {
-			Map.Entry<Double, Case> item = simResults.pollLastEntry();
+			Map.Entry<Double, CaseRec> item = simResults.pollLastEntry();
 			results.add(item);
 		}
 
@@ -57,7 +58,7 @@ public class CaseRecommend {
 	 * @param searchcase
 	 * @return 两个案例的相似度
 	 */
-	public double calculateSimilarity(Case c, Case searchcase) {
+	public double calculateSimilarity(CaseRec c, CaseRec searchcase) {
 
 		double totalSim = 0.0;
 
@@ -88,7 +89,7 @@ public class CaseRecommend {
 	 * @param searchcase
 	 * @return
 	 */
-	private double numThreadsSimilarity(Case c, Case searchcase) {
+	private double numThreadsSimilarity(CaseRec c, CaseRec searchcase) {
 		double similarity = 0.0;
 		double numThreadscase = c.getNumThreads();
 		double numThreadssearchcase = searchcase.getNumThreads();
@@ -103,7 +104,7 @@ public class CaseRecommend {
 	 * @param searchcase
 	 * @return
 	 */
-	private double readNumSimilarity(Case c, Case searchcase) {
+	private double readNumSimilarity(CaseRec c, CaseRec searchcase) {
 		double similarity = 0.0;
 		double readNumscase = c.getReadNum();
 		double readNumsearchcase = searchcase.getReadNum();
@@ -118,7 +119,7 @@ public class CaseRecommend {
 	 * @param searchcase
 	 * @return
 	 */
-	private double structureTypeSimilarity(Case c, Case searchcase) {
+	private double structureTypeSimilarity(CaseRec c, CaseRec searchcase) {
 		double similarity = 0.0;
 		double structureTypecase = c.getStructure_type();
 		double structureTypesearchcase = searchcase.getStructure_type();
@@ -133,7 +134,7 @@ public class CaseRecommend {
 	 * @param searchcase
 	 * @return
 	 */
-	private double numOperateSimilarity(Case c, Case searchcase) {
+	private double numOperateSimilarity(CaseRec c, CaseRec searchcase) {
 		double similarity = 0.0;
 		double numOperatecase = c.getNum_operate();
 		double numOperatesearchcase = searchcase.getNum_operate();
@@ -148,7 +149,7 @@ public class CaseRecommend {
 	 * @param searchcase
 	 * @return
 	 */
-	private double operateStructureTypeSimilarity(Case c, Case searchcase) {
+	private double operateStructureTypeSimilarity(CaseRec c, CaseRec searchcase) {
 		double similarity = 0.0;
 		double operateStructureTypecase = c.getOperate_structure_type();
 		double operateStructureTypesearchcase = searchcase.getOperate_structure_type();
@@ -192,17 +193,17 @@ public class CaseRecommend {
 		weights.put("Operatestructuretype", operate_structure_typeWeight);
 	}
 
-	public ArrayList<Case> getCasedatabases() {
+	public ArrayList<CaseRec> getCasedatabases() {
 		return casedatabases;
 	}
 
-	public void printResults(ArrayList<Map.Entry<Double, Case>> topCases) {
+	public void printResults(ArrayList<Map.Entry<Double, CaseRec>> topCases) {
 
 		System.out.println("Here are the top " + numTopCases + " cases: ");
 		for (Map.Entry c : topCases) {
 			String simString = c.getKey() + "";
 			double simDouble = Double.parseDouble(simString);
-			Case cc = (Case) (c.getValue());
+			CaseRec cc = (CaseRec) (c.getValue());
 
 			if (cc.getLock_type() == 0) {
 				System.out.println("Recommended use : ReadWriteLockType");
@@ -221,7 +222,7 @@ public class CaseRecommend {
 		}
 	}
 
-	public void setCasedatabases(ArrayList<Case> casedatabases) {
+	public void setCasedatabases(ArrayList<CaseRec> casedatabases) {
 		this.casedatabases = casedatabases;
 	}
 }
