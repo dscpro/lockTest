@@ -133,62 +133,62 @@ public class CaseBasicMethod {
 		return similarity;
 	}
 
-	public static int getSentenceDistance(String s1, String s2) {
-		int distance = 0;
+//	public static int getSentenceDistance(String s1, String s2) {
+//		int distance = 0;
+//
+//		String[] l1 = s1.split(" ");
+//		String[] l2 = s2.split(" ");
+//
+//		int[][] mat = new int[l1.length + 1][l2.length + 1];
+//
+//		for (int i = 1; i < l1.length + 1; i++)
+//			mat[i][0] = i;
+//
+//		for (int j = 1; j < l2.length + 1; j++)
+//			mat[0][j] = j;
+//
+//		for (int j = 1; j < l2.length + 1; j++) {
+//			for (int i = 1; i < l1.length + 1; i++) {
+//				int cost = 0;
+//				if (!l1[i - 1].equals(l2[j - 1]))
+//					cost = 1;
+//				mat[i][j] = Math.min(mat[i - 1][j] + 1, mat[i][j - 1] + 1);
+//				mat[i][j] = Math.min(mat[i][j], mat[i - 1][j - 1] + cost);
+//
+//			}
+//		}
+//		distance = mat[l1.length][l2.length];
+//
+//		return distance;
+//	}
+//
+//	public static double getSentenceSimilarity(String s1, String s2) {
+//		int distance = getSentenceDistance(s1, s2);
+//		int longerWordLength = Math.max(s1.split(" ").length, s2.split(" ").length);
+//		int sim = longerWordLength - distance;
+//
+//		double similarity = (double) sim / longerWordLength;
+//		if (similarity < 0)
+//			similarity = 0;
+//		return similarity;
+//	}
 
-		String[] l1 = s1.split(" ");
-		String[] l2 = s2.split(" ");
-
-		int[][] mat = new int[l1.length + 1][l2.length + 1];
-
-		for (int i = 1; i < l1.length + 1; i++)
-			mat[i][0] = i;
-
-		for (int j = 1; j < l2.length + 1; j++)
-			mat[0][j] = j;
-
-		for (int j = 1; j < l2.length + 1; j++) {
-			for (int i = 1; i < l1.length + 1; i++) {
-				int cost = 0;
-				if (!l1[i - 1].equals(l2[j - 1]))
-					cost = 1;
-				mat[i][j] = Math.min(mat[i - 1][j] + 1, mat[i][j - 1] + 1);
-				mat[i][j] = Math.min(mat[i][j], mat[i - 1][j - 1] + cost);
-
-			}
-		}
-		distance = mat[l1.length][l2.length];
-
-		return distance;
-	}
-
-	public static double getSentenceSimilarity(String s1, String s2) {
-		int distance = getSentenceDistance(s1, s2);
-		int longerWordLength = Math.max(s1.split(" ").length, s2.split(" ").length);
-		int sim = longerWordLength - distance;
-
-		double similarity = (double) sim / longerWordLength;
-		if (similarity < 0)
-			similarity = 0;
-		return similarity;
-	}
-
-	public static String findMostSimilarInput(String s, HashSet<String> set) {
-		String result = "";
-		Iterator<String> i = set.iterator();
-		double maxSim = 0.0;
-
-		while (i.hasNext()) {
-			String cur = i.next();
-			double similarity = getWordSimilarity(cur, s);
-			if (similarity > maxSim) {
-				result = cur;
-				maxSim = similarity;
-			}
-
-		}
-
-		return result;
-	}
+//	public static String findMostSimilarInput(String s, HashSet<String> set) {
+//		String result = "";
+//		Iterator<String> i = set.iterator();
+//		double maxSim = 0.0;
+//
+//		while (i.hasNext()) {
+//			String cur = i.next();
+//			double similarity = getWordSimilarity(cur, s);
+//			if (similarity > maxSim) {
+//				result = cur;
+//				maxSim = similarity;
+//			}
+//
+//		}
+//
+//		return result;
+//	}
 
 }
