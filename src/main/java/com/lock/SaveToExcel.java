@@ -14,7 +14,7 @@ public class SaveToExcel {
 	private static HSSFWorkbook workbook = null;
 	public static void savetoexcel(TestInfo info) throws IOException {
 		
-		File file = new File("src\\main\\resource\\lockresults.xls");
+		File file = new File("src/main/resource/lockresults.xls");
 		FileOutputStream out = null;
 		try {
 			workbook = new HSSFWorkbook(new FileInputStream(file));
@@ -35,7 +35,7 @@ public class SaveToExcel {
 		row.createCell(5).setCellValue(info.getNum_operate());
 		row.createCell(6).setCellValue(info.getOperate_type());		
 		row.createCell(7).setCellValue(info.getWasteTime());
-		out = new FileOutputStream("src\\main\\resource\\lockresults.xls");
+		out = new FileOutputStream("src/main/resource/lockresults.xls");
 		workbook.write(out);
 	}
 }

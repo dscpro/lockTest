@@ -13,14 +13,18 @@ import org.apache.poi.ss.usermodel.Row;
 
 import com.cbr.CaseOri;
 import com.cbr.CaseRec;
+import com.lock.TestInfo;
+
+import soot.JastAddJ.Frontend;
 
 public class CaseCreate {
 	private static HSSFWorkbook workbook = null;
 	private FileOutputStream out = null;
 	private ArrayList<CaseOri> casedatabasesori = new ArrayList<CaseOri>();
+	private ArrayList<CaseRec> casedatabasesrec = new ArrayList<CaseRec>();
 
 	private void getOriginalData() {
-		File file = new File("src\\main\\resource\\lockresults.xls");
+		File file = new File("src/main/resource/lockresults.xls");
 		try {
 			workbook = new HSSFWorkbook(new FileInputStream(file));
 		} catch (FileNotFoundException e) {
@@ -47,9 +51,55 @@ public class CaseCreate {
 
 	}
 
+	/**
+	 * 根据测试数据生成案例库
+	 * 
+	 */
 	public void constructCase() {
+		// 获取原始测试数据
 		getOriginalData();
-		
-		
+		// 计算推荐案例
+
+		// 保存推荐案例
+		for (CaseRec caseRec : casedatabasesrec) {
+			savetoexcel(caseRec);
+		}
+
+	}
+
+	private void savetoexcel(CaseRec info) {
+
+		File file = new File("src/main/resource/caseresults.xls");
+		FileOutputStream out = null;
+		try {
+			workbook = new HSSFWorkbook(new FileInputStream(file));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		HSSFSheet sheet = (HSSFSheet) workbook.getSheet("Sheet1");
+		int rowCount = sheet.getLastRowNum() + 1;
+		Row row = sheet.createRow(rowCount);
+		row.createCell(0).setCellValue(info.getLock_type());
+		row.createCell(1).setCellValue(info.getStructure_type());
+		row.createCell(2).setCellValue(info.getOperate_structure_type());
+		row.createCell(3).setCellValue(info.getNumThreads());
+		row.createCell(4).setCellValue(info.getReadNum());
+		row.createCell(5).setCellValue(info.getNum_operate());
+		row.createCell(6).setCellValue(info.getOperate_type());
+		try {
+			out = new FileOutputStream("src/main/resource/caseresults.xls");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			workbook.write(out);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

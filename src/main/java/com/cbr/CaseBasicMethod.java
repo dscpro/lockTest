@@ -17,7 +17,7 @@ public class CaseBasicMethod {
 	public static ArrayList<CaseRec> getCaseDatabases() {
 		ArrayList<CaseRec> casedatabases = new ArrayList<CaseRec>();
 		HSSFWorkbook workbook = null;
-		File file = new File("src\\main\\resource\\caseresults.xls");
+		File file = new File("src/main/resource/caseresults.xls");
 		try {
 			workbook = new HSSFWorkbook(new FileInputStream(file));
 		} catch (FileNotFoundException e) {
