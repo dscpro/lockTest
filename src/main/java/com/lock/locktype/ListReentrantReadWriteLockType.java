@@ -16,7 +16,6 @@ public class ListReentrantReadWriteLockType extends ListLockType {
 	public ListReentrantReadWriteLockType(List myList) {
 		this.list = myList;
 	}
-
 	public Object get(int index) {
 		readLock.lock();
 		try {

@@ -6,7 +6,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ListReentrantLockType extends ListLockType {
 
-	private Lock lock = new ReentrantLock();
+	private Lock lock = new ReentrantLock();//非公平
 
 	public ListReentrantLockType() {
 	}

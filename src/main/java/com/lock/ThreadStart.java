@@ -20,12 +20,13 @@ public class ThreadStart {
 		Thread[] wr = new WriteThread[writeNum];		
 		log.info(test.getClass().getSimpleName() + "++++start test++++");
 		long startTime = System.currentTimeMillis();
+		
 		for (int i = 0; i < readNum; i++) {
 			rd[i] = new ReadThread(i, test,exeNum);
 			rd[i].start();
 		}
 		for (int i = 0; i < writeNum; i++) {
-			wr[i] = new WriteThread(readNum + i, test,exeNum);
+			wr[i] = new WriteThread(readNum + i,test,exeNum);
 			wr[i].start();
 		}
 		try {

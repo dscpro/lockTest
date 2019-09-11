@@ -2,12 +2,14 @@ package com.cbr.recommend;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
-import com.cbr.CaseRec;
 import com.cbr.CaseBasicMethod;
+import com.cbr.CaseRec;
 
 public class CaseRecommend {
 	public int numTopCases = 3;
@@ -30,7 +32,7 @@ public class CaseRecommend {
 		constructWeights();
 		double increment = 0.000001;
 		for (CaseRec c : casedatabases) {
-			double sim = calculateSimilarity(c, searchcase);
+			double sim = caculatePearson(c, searchcase);
 			sim += increment;
 			increment += 0.000001;
 			simResults.put(sim, c);
@@ -80,6 +82,62 @@ public class CaseRecommend {
 				+ structure_typeSim * structuretypeWeight + operate_structure_typeSim * operatestructuretypeWeight)
 				/ totalWeight;
 		return totalSim;
+	}
+
+	/**
+	 * 皮尔逊相关系数计算相似度 *
+	 * 
+	 * @return
+	 */
+	private double caculatePearson(CaseRec c, CaseRec searchcase) {
+		Map<Integer, Integer> mapX = new HashMap<Integer, Integer>();
+		Map<Integer, Integer> mapY = new HashMap<Integer, Integer>();
+		// 放置案例库中案例
+		mapX.put(0, c.getLock_type());
+		mapX.put(1, c.getNum_operate());
+		mapX.put(2, c.getNumThreads());
+		mapX.put(3, c.getOperate_structure_type());
+		mapX.put(4, c.getReadNum());
+		mapX.put(5, c.getStructure_type());
+		// 放置待匹配案例
+		mapY.put(0, searchcase.getLock_type());
+		mapY.put(1, searchcase.getNum_operate());
+		mapY.put(2, searchcase.getNumThreads());
+		mapY.put(3, searchcase.getOperate_structure_type());
+		mapY.put(4, searchcase.getReadNum());
+		mapY.put(5, searchcase.getStructure_type());
+
+		double sumXY = 0d;
+		double sumX = 0d;
+		double sumY = 0d;
+		double sumPowX = 0d;
+		double sumPowY = 0d;
+		Set<Integer> setItem = new HashSet<Integer>();
+		for (Map.Entry<Integer, Integer> entry : mapX.entrySet()) {
+			setItem.add(entry.getKey());
+		}
+		for (Map.Entry<Integer, Integer> entry : mapY.entrySet()) {
+			setItem.add(entry.getKey());
+		}
+		for (Integer bookId : setItem) {
+			Integer x = mapX.get(bookId);
+			if (x == null) {
+				x = 0;
+			}
+			Integer y = mapY.get(bookId);
+			if (y == null) {
+				y = 0;
+			}
+			sumXY += x * y;
+			sumX += x;
+			sumY += y;
+			sumPowX += Math.pow(x, 2);
+			sumPowY += Math.pow(y, 2);
+		}
+		int n = setItem.size();
+		double pearson = (sumXY - sumX * sumY / n)
+				/ Math.sqrt((sumPowX - Math.pow(sumX, 2) / n) * (sumPowY - Math.pow(sumY, 2) / n));
+		return pearson;
 	}
 
 	/**
