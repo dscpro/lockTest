@@ -15,7 +15,7 @@ public class TestAll {
 		// 分析，返回
 		HashMap<String, Integer> attributeMap = ProAnalysis.proAnalysis(name);
 		//构建案例类
-		CaseRec caserec = new CaseRec(attributeMap.get("numthreads"), attributeMap.get("readnum"), attributeMap.get("num_operate"), attributeMap.get("structure_type"), attributeMap.get("operate_structure_type"));
+		CaseRec caserec = new CaseRec(attributeMap.get("numthreads"), attributeMap.get("readnum"), attributeMap.get("num_operate"), attributeMap.get("structure_type"));
 		//推荐案例
 		CaseRecommend cbr = new CaseRecommend();
 		ArrayList<Map.Entry<Double, CaseRec>> topCases = cbr.retrieval(caserec);

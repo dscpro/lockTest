@@ -4,7 +4,7 @@ public final class Constant {
 	/**
 	 * 线程数
 	 */
-	public static Integer[] NUM_THREADS = {5,50,80,100,200,500,800,1000,1200,1500,1800,2400,2800,3000,3500,3800,4000,4500,5000,6000,7000,8000,10000};
+	public static Integer[] NUM_THREADS = {5,50,80,100,200,500,800,1000,1200,1500,1800,2400,2800,3000,3500,3800,4000,4500,5000,6000,7000,8000};
 	/**
 	 * 读操作线程数
 	 */
@@ -14,15 +14,15 @@ public final class Constant {
 	 */
 	//public static Integer NUM_OPERATE =50;
 	//public static Integer[] NUM_WRITE ={1,5,10,50,100};
-	public static Integer[] NUM_EXETIMES ={5,50,100,1000,10000};
+	public static Integer[] NUM_EXETIMES ={5,50,100,500,800,1000,1500,2000,3000,5000,8000};
 	/**
 	 * 数据结构类型
 	 */
-	public static String[] STRUCTURE_TYPE={"Group","List","Map","Set"};
+	public static String[] STRUCTURE_TYPE={"ArrayList","LinkedList","HashMap","TreeMap","TreeSet"};
 	/**
 	 * 操作数据类型
 	 */
-	public static String[] OPERATE_STRUCTURE_TYPE={"Group","Array","Linked","Hash","Tree","ConcurrentHash","WeakHash"};
+	//public static String[] OPERATE_STRUCTURE_TYPE={"Group","Array","Linked","Hash","Tree","ConcurrentHash","WeakHash"};
 	
 	/**
 	 * 锁类型

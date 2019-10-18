@@ -12,16 +12,15 @@ import com.cbr.CaseBasicMethod;
 import com.cbr.CaseRec;
 
 public class CaseRecommend {
-	public int numTopCases = 3;
+	public int numTopCases = 5;
 	public ArrayList<CaseRec> casedatabases = CaseBasicMethod.getCaseDatabases();
 	public HashMap<String, Integer> weights = new HashMap<String, Integer>();
 
 	public void analysis() {
 
 	}
-
 	/**
-	 * 查找相似案例 默认返回前numTopCases个案例（3）
+	 * 查找相似案例 默认返回前numTopCases个案例（5）
 	 * 
 	 * @param searchcase
 	 * @return 案例及其相似度
@@ -29,12 +28,12 @@ public class CaseRecommend {
 	public ArrayList<Map.Entry<Double, CaseRec>> retrieval(CaseRec searchcase) {
 		TreeMap<Double, CaseRec> simResults = new TreeMap<Double, CaseRec>();
 		ArrayList<Map.Entry<Double, CaseRec>> results = new ArrayList<Entry<Double, CaseRec>>();
-		constructWeights();
+		//constructWeights();
 		double increment = 0.000001;
 		for (CaseRec c : casedatabases) {
-			double sim = caculatePearson(c, searchcase);
-			sim += increment;
-			increment += 0.000001;
+			double sim = caculateByPearson(c, searchcase);
+			//sim += increment;
+			//increment += 0.000001;
 			simResults.put(sim, c);
 		}
 		for (int i = 0; i < numTopCases; i++) {
@@ -60,52 +59,62 @@ public class CaseRecommend {
 	 * @param searchcase
 	 * @return 两个案例的相似度
 	 */
-	public double calculateSimilarity(CaseRec c, CaseRec searchcase) {
+	private double calculateSimilarity(CaseRec c, CaseRec searchcase) {
 
 		double totalSim = 0.0;
-
 		double numThreadsSim = numThreadsSimilarity(c, searchcase);
 		double readNumSim = readNumSimilarity(c, searchcase);
 		double num_operateSim = numOperateSimilarity(c, searchcase);
 		double structure_typeSim = structureTypeSimilarity(c, searchcase);
-		double operate_structure_typeSim = operateStructureTypeSimilarity(c, searchcase);
+		//double operate_structure_typeSim = operateStructureTypeSimilarity(c, searchcase);
 		int totalWeight = 0;
 		int numThreadsWeight = weights.get("NumThreads");
 		int readNumWeight = weights.get("ReadNum");
 		int numoperateWeight = weights.get("Numoperate");
 		int structuretypeWeight = weights.get("Structuretype");
-		int operatetypeWeight = weights.get("Operatetype");
+		//int operatetypeWeight = weights.get("Operatetype");
 		int operatestructuretypeWeight = weights.get("Operatestructuretype");
 		totalWeight = totalWeight + numThreadsWeight + readNumWeight + numoperateWeight + structuretypeWeight
 				+ operatestructuretypeWeight;
 		totalSim = (numThreadsSim * numThreadsWeight + readNumSim * readNumWeight + num_operateSim * numoperateWeight
-				+ structure_typeSim * structuretypeWeight + operate_structure_typeSim * operatestructuretypeWeight)
+				+ structure_typeSim * structuretypeWeight )
 				/ totalWeight;
 		return totalSim;
 	}
 
 	/**
+	 *  分段计算相似度 *
+	 * 
+	 * @return
+	 */
+	private double caculateByPhase(CaseRec c, CaseRec searchcase) {
+		double phase=0.0;
+		
+		return phase;
+	}
+	
+	/**
 	 * 皮尔逊相关系数计算相似度 *
 	 * 
 	 * @return
 	 */
-	private double caculatePearson(CaseRec c, CaseRec searchcase) {
+	private double caculateByPearson(CaseRec c, CaseRec searchcase) {
 		Map<Integer, Integer> mapX = new HashMap<Integer, Integer>();
 		Map<Integer, Integer> mapY = new HashMap<Integer, Integer>();
 		// 放置案例库中案例
 		mapX.put(0, c.getLock_type());
 		mapX.put(1, c.getNum_operate());
 		mapX.put(2, c.getNumThreads());
-		mapX.put(3, c.getOperate_structure_type());
-		mapX.put(4, c.getReadNum());
-		mapX.put(5, c.getStructure_type());
+		//mapX.put(3, c.getOperate_structure_type());
+		mapX.put(3, c.getReadNum());
+		mapX.put(4, c.getStructure_type());
 		// 放置待匹配案例
 		mapY.put(0, searchcase.getLock_type());
 		mapY.put(1, searchcase.getNum_operate());
 		mapY.put(2, searchcase.getNumThreads());
-		mapY.put(3, searchcase.getOperate_structure_type());
-		mapY.put(4, searchcase.getReadNum());
-		mapY.put(5, searchcase.getStructure_type());
+		//mapY.put(3, searchcase.getOperate_structure_type());
+		mapY.put(3, searchcase.getReadNum());
+		mapY.put(4, searchcase.getStructure_type());
 
 		double sumXY = 0d;
 		double sumX = 0d;
@@ -137,6 +146,8 @@ public class CaseRecommend {
 		int n = setItem.size();
 		double pearson = (sumXY - sumX * sumY / n)
 				/ Math.sqrt((sumPowX - Math.pow(sumX, 2) / n) * (sumPowY - Math.pow(sumY, 2) / n));
+		if(pearson==1)
+			return pearson;
 		return pearson;
 	}
 
@@ -207,17 +218,16 @@ public class CaseRecommend {
 	 * @param searchcase
 	 * @return
 	 */
-	private double operateStructureTypeSimilarity(CaseRec c, CaseRec searchcase) {
-		double similarity = 0.0;
-		double operateStructureTypecase = c.getOperate_structure_type();
-		double operateStructureTypesearchcase = searchcase.getOperate_structure_type();
-		similarity = calDistinct(operateStructureTypecase, operateStructureTypesearchcase);
-		return similarity;
-	}
+//	private double operateStructureTypeSimilarity(CaseRec c, CaseRec searchcase) {
+//		double similarity = 0.0;
+//		double operateStructureTypecase = c.getOperate_structure_type();
+//		double operateStructureTypesearchcase = searchcase.getOperate_structure_type();
+//		similarity = calDistinct(operateStructureTypecase, operateStructureTypesearchcase);
+//		return similarity;
+//	}
 
 	/**
 	 * 计算两个值的相似度
-	 * 
 	 * @param caseV
 	 * @param userV
 	 * @return
@@ -241,14 +251,14 @@ public class CaseRecommend {
 		int num_operateWeight = 6;
 		int structure_typeWeight = 8;
 		int operate_typeWeight = 3;
-		int operate_structure_typeWeight = 8;
+		//int operate_structure_typeWeight = 8;
 
 		weights.put("NumThreads", numThreadsWeight);
 		weights.put("ReadNum", readNumWeight);
 		weights.put("Numoperate", num_operateWeight);
 		weights.put("Structuretype", structure_typeWeight);
 		weights.put("Operatetype", operate_typeWeight);
-		weights.put("Operatestructuretype", operate_structure_typeWeight);
+		//weights.put("Operatestructuretype", operate_structure_typeWeight);
 	}
 
 	public ArrayList<CaseRec> getCasedatabases() {
@@ -275,7 +285,8 @@ public class CaseRecommend {
 			if (cc.getLock_type() == 3) {
 				System.out.println("Recommended use : SynchronizedLockType");
 			}
-			System.out.printf("Similarity: %.2f \n", simDouble);
+			
+			System.out.printf("Similarity: %.8f \n", simDouble);
 
 		}
 	}

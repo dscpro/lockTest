@@ -6,12 +6,10 @@ public class ListLockType implements LockType {
 	protected List list;
 	 
 	public Object get(int index) {
-
 		return null;
 	}
 
 	public boolean insert(Object newValue) {
-
 		return false;
 	}
 

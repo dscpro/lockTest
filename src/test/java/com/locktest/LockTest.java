@@ -21,9 +21,9 @@ public class LockTest {
 		int structure_type = 1;
 		int lock_type = 0;
 		int operate_type = 0;		
-		int operate_structure_type=2;
+		//int operate_structure_type=2;
 		int readNum=(int) (readNum1*numThreads);
-		TestInfo info = new TestInfo(numThreads,readNum,num_operate,structure_type,operate_structure_type,lock_type,operate_type);
+		TestInfo info = new TestInfo(numThreads,readNum,num_operate,structure_type,lock_type);
 		
 		String listReadwritelocktypestr = "com.lock.locktype." + Constant.STRUCTURE_TYPE[structure_type]
 				+ Constant.LOCK_TYPE[lock_type];

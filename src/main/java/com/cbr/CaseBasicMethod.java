@@ -33,17 +33,17 @@ public class CaseBasicMethod {
 			// System.out.println(row.getCell(1).getNumericCellValue());
 			casetest.setLock_type((int) row.getCell(0).getNumericCellValue());
 			casetest.setStructure_type((int) row.getCell(1).getNumericCellValue());
-			casetest.setOperate_structure_type((int) row.getCell(2).getNumericCellValue());
-			casetest.setNumThreads((int) row.getCell(3).getNumericCellValue());
-			casetest.setReadNum((int) row.getCell(4).getNumericCellValue());
-			casetest.setNum_operate((int) row.getCell(5).getNumericCellValue());
-			casetest.setOperate_type((int) row.getCell(6).getNumericCellValue());
+			//casetest.setOperate_structure_type((int) row.getCell(2).getNumericCellValue());
+			casetest.setNumThreads((int) row.getCell(2).getNumericCellValue());
+			casetest.setReadNum((int) row.getCell(3).getNumericCellValue());
+			casetest.setNum_operate((int) row.getCell(4).getNumericCellValue());
+			//casetest.setOperate_type((int) row.getCell(5).getNumericCellValue());
 			casedatabases.add(casetest);
 		}
 
 		return casedatabases;
 	}
-
+	
 	public static double CaseAttributeSimilarity(CaseRec c, CaseRec userCase, String attribute) {
 		double similarity = 0.0;
 		int caseType = 0;

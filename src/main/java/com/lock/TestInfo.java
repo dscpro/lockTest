@@ -6,22 +6,22 @@ public class TestInfo {
 	int num_operate;
 	int structure_type;
 	int lock_type;
-	int operate_type;
-	int operate_structure_type;
+	//int operate_type;
+	// int operate_structure_type;
 	long wasteTime;
 
 	public TestInfo() {
 	}
 
-	public TestInfo(int numThreads, int readNum, int num_operate, int structure_type,int operate_structure_type, int lock_type,int operate_type) {
+	public TestInfo(int numThreads, int readNum, int num_operate, int structure_type, int lock_type) {
 		super();
 		this.numThreads = numThreads;
 		this.readNum = readNum;
 		this.num_operate = num_operate;
 		this.structure_type = structure_type;
-		this.operate_structure_type=operate_structure_type;
+		// this.operate_structure_type=operate_structure_type;
 		this.lock_type = lock_type;
-		this.operate_type=operate_type;
+		//this.operate_type = operate_type;
 	}
 
 	public int getNumThreads() {
@@ -40,7 +40,7 @@ public class TestInfo {
 		this.readNum = readNum;
 	}
 
- 	public int getNum_operate() {
+	public int getNum_operate() {
 		return num_operate;
 	}
 
@@ -56,28 +56,12 @@ public class TestInfo {
 		this.structure_type = structure_type;
 	}
 
-	public int getOperate_structure_type() {
-		return operate_structure_type;
-	}
-
-	public void setOperate_structure_type(int operate_structure_type) {
-		this.operate_structure_type = operate_structure_type;
-	}
-
 	public int getLock_type() {
 		return lock_type;
 	}
 
 	public void setLock_type(int lock_type) {
 		this.lock_type = lock_type;
-	}
-
-	public int getOperate_type() {
-		return operate_type;
-	}
-
-	public void setOperate_type(int operate_type) {
-		this.operate_type = operate_type;
 	}
 
 	public long getWasteTime() {

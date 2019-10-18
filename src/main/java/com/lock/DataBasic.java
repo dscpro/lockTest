@@ -16,8 +16,7 @@ public class DataBasic {
 
 	public static Object getDataPre(TestInfo info) {
 
-		String structure_type = Constant.OPERATE_STRUCTURE_TYPE[info.getOperate_structure_type()]
-				+ Constant.STRUCTURE_TYPE[info.getStructure_type()];
+		String structure_type =  Constant.STRUCTURE_TYPE[info.getStructure_type()];
 
 		int opnum = info.getNum_operate();
 		if (structure_type.equals("ArrayList"))
@@ -31,24 +30,27 @@ public class DataBasic {
 		if (structure_type.equals("TreeSet"))
 			return DataBasic.setTreeSetDataPre(structure_type, opnum);
 		if (structure_type.equals("TreeMap"))
-			return DataBasic.setTreeMapDataPre(structure_type, opnum);
-		if (structure_type.equals("ConcurrentHashMap"))
-			return DataBasic.setConcurrentHashMapDataPre(structure_type, opnum);
+			return DataBasic.setTreeMapDataPre(structure_type, opnum);		
 		if (structure_type.equals("HashSet"))
 			return DataBasic.setHashSetDataPre(structure_type, opnum);
-		if (structure_type.equals("WeakHashMap"))
-			return DataBasic.setWeakHashMapDataPre(structure_type, opnum);
+//		if (structure_type.equals("ConcurrentHashMap"))
+//			return DataBasic.setConcurrentHashMapDataPre(structure_type, opnum);
+//		if (structure_type.equals("WeakHashMap"))
+//			return DataBasic.setWeakHashMapDataPre(structure_type, opnum);
 		return null;
 	}
 
-	private static Object setWeakHashMapDataPre(String structure_type, int opnum) {
-		Map<String, Integer> weakMap = new WeakHashMap<String, Integer>();
-		for (int j = 0; j < opnum; j++) {
-			weakMap.put(j + "i", j);
-		}
-		return weakMap;
-
-	}
+//	private static Object setWeakHashMapDataPre(String structure_type, int opnum) {
+//		Map<String, Integer> weakMap = new WeakHashMap<String, Integer>();
+//		for (int j = 0; j < opnum; j++) {
+//			weakMap.put(j + "i", j);
+//		}
+//		return weakMap;
+//
+//	}
+	
+	
+	
 
 	private static Object setHashSetDataPre(String structure_type, int opnum) {
 		Set<Integer> set = new HashSet<Integer>();
@@ -58,13 +60,13 @@ public class DataBasic {
 		return set;
 	}
 
-	private static Object setConcurrentHashMapDataPre(String structure_type, int opnum) {
-		Map<String, Integer> conMap = new ConcurrentHashMap<String, Integer>();
-		for (int j = 0; j < opnum; j++) {
-			conMap.put(j + "i", j);
-		}
-		return conMap;
-	}
+//	private static Object setConcurrentHashMapDataPre(String structure_type, int opnum) {
+//		Map<String, Integer> conMap = new ConcurrentHashMap<String, Integer>();
+//		for (int j = 0; j < opnum; j++) {
+//			conMap.put(j + "i", j);
+//		}
+//		return conMap;
+//	}
 
 	private static Object setTreeMapDataPre(String structure_type, int opnum) {
 		Map<String, Integer> map = new TreeMap<String, Integer>();

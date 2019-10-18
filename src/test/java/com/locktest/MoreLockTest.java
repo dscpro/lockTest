@@ -24,11 +24,11 @@ public class MoreLockTest extends TestCase {
 		int readNum;
 		int exeNum;
 
-		int structure_type = 2;
+		int structure_type = 0;
 		int lock_type;
-		int[] lock = { 0, 1, 2, 3 };
-		int operate_type = 0;
-		int operate_structure_type = 6;
+		int[] lock = { 0,1,2,3 };
+		//int operate_type = 0;
+		// int operate_structure_type = 6;
 
 		for (int lock_typeIndex : lock) {
 			lock_type = lock_typeIndex;
@@ -37,17 +37,24 @@ public class MoreLockTest extends TestCase {
 				for (int exeTimesIndex : Constant.NUM_EXETIMES) {
 					exeNum = exeTimesIndex;
 					for (double readNumIndex : Constant.NUM_READ) {
-						readNum = (int) (readNumIndex*numThreads);
+						readNum = (int) (readNumIndex * numThreads);
 						if (readNum <= numThreads) {
-							TestInfo info = new TestInfo(numThreads, readNum, exeNum, structure_type,
-									operate_structure_type, lock_type, operate_type);
+							TestInfo info = new TestInfo(numThreads, readNum, exeNum, structure_type, lock_type
+									);
+							String listlocktypestr = "";
+							String s=Constant.STRUCTURE_TYPE[structure_type];
+							if (structure_type == 0 || structure_type == 1) {
+								listlocktypestr = "com.lock.locktype."
+										+ s.substring(s.length()-4,s.length()) + Constant.LOCK_TYPE[lock_type];
+							} else {
+								listlocktypestr = "com.lock.locktype."
+										+ s.substring(s.length()-3,s.length()) + Constant.LOCK_TYPE[lock_type];
+							}
 
-							String listReadwritelocktypestr = "com.lock.locktype."
-									+ Constant.STRUCTURE_TYPE[structure_type] + Constant.LOCK_TYPE[lock_type];
-
-							LockType locktest = LockTypePre.preLock(listReadwritelocktypestr,
+							LockType locktest = LockTypePre.preLock(listlocktypestr,
 									DataBasic.getDataPre(info));
 							ThreadStart.testLock(info, locktest);
+
 						}
 					}
 				}

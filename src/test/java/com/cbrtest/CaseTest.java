@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.cbr.CaseOri;
 import com.cbr.CaseRec;
 import com.cbr.create.CaseCreate;
 import com.cbr.recommend.CaseRecommend;
@@ -14,14 +15,18 @@ import junit.framework.TestCase;
 public class CaseTest {
 	@Test
 	public void testRec() {
-		CaseRec case1 = new CaseRec(1000, 450, 200, 1, 1);
+		CaseRec case1 = new CaseRec(1000, 450, 200, 1);
 		CaseRecommend cbr = new CaseRecommend();
 		ArrayList<Map.Entry<Double, CaseRec>> topCases = cbr.retrieval(case1);
 		cbr.printResults(topCases);
 	}
-
 	
 	public void testCre() {
+		CaseCreate case2 = new CaseCreate();
+		case2.constructCase();
+	}
+
+	public static void main(String[] args) {
 		CaseCreate case2 = new CaseCreate();
 		case2.constructCase();
 	}

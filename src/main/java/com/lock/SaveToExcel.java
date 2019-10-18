@@ -29,12 +29,12 @@ public class SaveToExcel {
 		Row row = sheet.createRow(rowCount);
 		row.createCell(0).setCellValue(info.getLock_type());
 		row.createCell(1).setCellValue(info.getStructure_type());
-		row.createCell(2).setCellValue(info.getOperate_structure_type());
-		row.createCell(3).setCellValue(info.getNumThreads());
-		row.createCell(4).setCellValue(info.getReadNum());
-		row.createCell(5).setCellValue(info.getNum_operate());
-		row.createCell(6).setCellValue(info.getOperate_type());		
-		row.createCell(7).setCellValue(info.getWasteTime());
+		//row.createCell(2).setCellValue(info.getOperate_structure_type());
+		row.createCell(2).setCellValue(info.getNumThreads());
+		row.createCell(3).setCellValue(info.getReadNum());
+		row.createCell(4).setCellValue(info.getNum_operate());
+		//row.createCell(5).setCellValue(info.getOperate_type());		
+		row.createCell(5).setCellValue(info.getWasteTime());
 		out = new FileOutputStream("src/main/resource/lockresults.xls");
 		workbook.write(out);
 	}
