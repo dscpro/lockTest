@@ -12,6 +12,8 @@ import java.util.TreeSet;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.lock.locktype.LockType;
+
 public class DataBasic {
 
 	public static Object getDataPre(TestInfo info) {
@@ -39,7 +41,59 @@ public class DataBasic {
 //			return DataBasic.setWeakHashMapDataPre(structure_type, opnum);
 		return null;
 	}
+	public static void moreLockCreate() {
 
+		int numThreads;
+		int readNum;
+		int exeNum;
+
+		int[] structure_types = { 0, 1, 2, 3, 4 };
+		int lock_type;
+		int[] lock = { 0, 1, 2, 3 };
+		// int operate_type = 0;
+		// int operate_structure_type = 6;
+		for (int structure_type : structure_types) {
+
+			for (int lock_typeIndex : lock) {
+				lock_type = lock_typeIndex;
+				for (int numThreadsIndex : Constant.NUM_THREADS) {
+					numThreads = numThreadsIndex;
+					for (int exeTimesIndex : Constant.NUM_EXETIMES) {
+						if (structure_type == 1 && ((numThreadsIndex == 8000 && exeTimesIndex == 8000)
+								|| (numThreadsIndex == 7000 && exeTimesIndex == 8000)))
+							continue;
+						exeNum = exeTimesIndex;
+						for (double readNumIndex : Constant.NUM_READ) {
+							readNum = (int) (readNumIndex * numThreads);
+							if (readNum <= numThreads) {
+								TestInfo info = new TestInfo(numThreads, readNum, exeNum, structure_type, lock_type);
+								String listlocktypestr = "";
+								String s = Constant.STRUCTURE_TYPE[structure_type];
+								if (structure_type == 0 || structure_type == 1) {
+									listlocktypestr = "com.lock.locktype." + s.substring(s.length() - 4, s.length())
+											+ Constant.LOCK_TYPE[lock_type];
+								} else {
+									listlocktypestr = "com.lock.locktype." + s.substring(s.length() - 3, s.length())
+											+ Constant.LOCK_TYPE[lock_type];
+								}
+								try {
+
+									LockType locktest = LockTypePre.preLock(listlocktypestr,
+											DataBasic.getDataPre(info));
+									ThreadStart.testLock(info, locktest);
+								} catch (Exception e) {
+									// TODO: handle exception
+								}
+
+							}
+						}
+
+					}
+				}
+			}
+		}
+
+	}
 //	private static Object setWeakHashMapDataPre(String structure_type, int opnum) {
 //		Map<String, Integer> weakMap = new WeakHashMap<String, Integer>();
 //		for (int j = 0; j < opnum; j++) {

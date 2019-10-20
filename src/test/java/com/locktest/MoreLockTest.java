@@ -16,6 +16,7 @@ import com.lock.locktype.LockType;
 import junit.framework.TestCase;
 
 public class MoreLockTest extends TestCase {
+	
 
 	public static void main(String[] args)
 			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
@@ -24,42 +25,46 @@ public class MoreLockTest extends TestCase {
 		int readNum;
 		int exeNum;
 
-		int structure_type = 0;
+		int[] structure_types = { 1 };
 		int lock_type;
-		int[] lock = { 0,1,2,3 };
-		//int operate_type = 0;
+		int[] lock = { 0, 1, 2, 3 };
+		// int operate_type = 0;
 		// int operate_structure_type = 6;
+		for (int structure_type : structure_types) {
 
-		for (int lock_typeIndex : lock) {
-			lock_type = lock_typeIndex;
-			for (int numThreadsIndex : Constant.NUM_THREADS) {
-				numThreads = numThreadsIndex;
-				for (int exeTimesIndex : Constant.NUM_EXETIMES) {
-					exeNum = exeTimesIndex;
-					for (double readNumIndex : Constant.NUM_READ) {
-						readNum = (int) (readNumIndex * numThreads);
-						if (readNum <= numThreads) {
-							TestInfo info = new TestInfo(numThreads, readNum, exeNum, structure_type, lock_type
-									);
-							String listlocktypestr = "";
-							String s=Constant.STRUCTURE_TYPE[structure_type];
-							if (structure_type == 0 || structure_type == 1) {
-								listlocktypestr = "com.lock.locktype."
-										+ s.substring(s.length()-4,s.length()) + Constant.LOCK_TYPE[lock_type];
-							} else {
-								listlocktypestr = "com.lock.locktype."
-										+ s.substring(s.length()-3,s.length()) + Constant.LOCK_TYPE[lock_type];
+			for (int lock_typeIndex : lock) {
+				lock_type = lock_typeIndex;
+				for (int numThreadsIndex : Constant.NUM_THREADS) {
+					numThreads = numThreadsIndex;
+					for (int exeTimesIndex : Constant.NUM_EXETIMES) {
+						if (structure_type == 1 && ((numThreadsIndex == 8000 && exeTimesIndex == 8000)
+								|| (numThreadsIndex == 7000 && exeTimesIndex == 8000)))
+							continue;
+						exeNum = exeTimesIndex;
+						for (double readNumIndex : Constant.NUM_READ) {
+							readNum = (int) (readNumIndex * numThreads);
+							if (readNum <= numThreads) {
+								TestInfo info = new TestInfo(numThreads, readNum, exeNum, structure_type, lock_type);
+								String listlocktypestr = "";
+								String s = Constant.STRUCTURE_TYPE[structure_type];
+								if (structure_type == 0 || structure_type == 1) {
+									listlocktypestr = "com.lock.locktype." + s.substring(s.length() - 4, s.length())
+											+ Constant.LOCK_TYPE[lock_type];
+								} else {
+									listlocktypestr = "com.lock.locktype." + s.substring(s.length() - 3, s.length())
+											+ Constant.LOCK_TYPE[lock_type];
+								}
+
+								LockType locktest = LockTypePre.preLock(listlocktypestr, DataBasic.getDataPre(info));
+								ThreadStart.testLock(info, locktest);
+
 							}
-
-							LockType locktest = LockTypePre.preLock(listlocktypestr,
-									DataBasic.getDataPre(info));
-							ThreadStart.testLock(info, locktest);
-
 						}
+
 					}
 				}
 			}
-
 		}
+
 	}
 }

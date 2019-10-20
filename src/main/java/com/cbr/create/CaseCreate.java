@@ -25,11 +25,11 @@ import soot.JastAddJ.Frontend;
 public class CaseCreate {
 	private static HSSFWorkbook workbook = null;
 	private FileOutputStream out = null;
-	private ArrayList<CaseOri> casedatabasesori = new ArrayList<CaseOri>();
-	private ArrayList<CaseRec> casedatabasesrec = new ArrayList<CaseRec>();
+	private static ArrayList<CaseOri> casedatabasesori = new ArrayList<CaseOri>();
+	private static ArrayList<CaseRec> casedatabasesrec = new ArrayList<CaseRec>();
 	static Logger log = Logger.getLogger("");
 
-	private void getOriginalData() {
+	private static void getOriginalData() {
 		File file = new File("src/main/resource/lockresults.xls");
 		try {
 			workbook = new HSSFWorkbook(new FileInputStream(file));
@@ -66,7 +66,7 @@ public class CaseCreate {
 	/**
 	 * 修改不当数据 对比前后都超过两倍
 	 */
-	public void checkDataPre() {
+	public static void checkDataPre() {
 
 		File file = new File("src/main/resource/lockresults.xls");
 		try {
@@ -125,9 +125,8 @@ public class CaseCreate {
 
 	/**
 	 * 根据测试数据生成案例库
-	 * 
 	 */
-	public void constructCase() {
+	public  static void constructCase() {
 		// 获取原始测试数据
 		getOriginalData();
 		// 调整数据
@@ -224,7 +223,7 @@ public class CaseCreate {
 		log.info("Save Cases Done");
 	}
 
-	private void savetoexcel(CaseOri info) {
+	private static void savetoexcel(CaseOri info) {
 
 		File file = new File("src/main/resource/caseresults.xls");
 		FileOutputStream out = null;
