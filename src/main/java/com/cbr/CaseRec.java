@@ -10,10 +10,9 @@ public class CaseRec extends Case {
 	 * @param numThreads
 	 * @param readNum
 	 * @param num_operate
-	 * @param structure_type
-	 * @param operate_structure_type
+	 * @param structure_type 0:ArrayList,1:LinkedList,2:HashMap,3:TreeMap,4:TreeSet
 	 */
-	public CaseRec(int numThreads, int readNum, int num_operate, int structure_type) {
+	public CaseRec(int structure_type,int numThreads, double readNum, int num_operate) {
 		super();
 		this.numThreads = numThreads;
 		this.readNum = readNum;

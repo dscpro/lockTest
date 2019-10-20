@@ -18,8 +18,8 @@ public class TestAll {
 		CaseRec caserec = new CaseRec(attributeMap.get("numthreads"), attributeMap.get("readnum"), attributeMap.get("num_operate"), attributeMap.get("structure_type"));
 		//推荐案例
 		CaseRecommend cbr = new CaseRecommend();
-		ArrayList<Map.Entry<Double, CaseRec>> topCases = cbr.retrieval(caserec);
-		cbr.printResults(topCases);
+		//ArrayList<Map.Entry<Double, CaseRec>> topCases = cbr.retrieval(caserec);
+		//cbr.printResults(topCases);
 	}
 
 }

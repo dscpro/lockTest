@@ -55,25 +55,72 @@ public class CaseCreate {
 			casetest.setExetimes((int) row.getCell(5).getNumericCellValue());
 			casedatabasesori.add(casetest);
 		}
-
+		try {
+			workbook.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+
 	/**
-	 *  修改不当数据
-	 *  对比前后都超过两倍  
+	 * 修改不当数据 对比前后都超过两倍
 	 */
 	public void checkDataPre() {
-		getOriginalData();
-		ArrayList<CaseOri> caseori = casedatabasesori;
-		for (int i =0;i<=caseori.size();i++) {
-			int exetimenpre = caseori.get(i-1).getExetimes();
-			int exetimenow = caseori.get(i).getExetimes();
-			if(exetimenow/exetimenpre>=2) {
-				int exetimennext = caseori.get(i+1).getExetimes();
-				if(exetimenow/exetimennext>=2) {
-					
+
+		File file = new File("src/main/resource/lockresults.xls");
+		try {
+			workbook = new HSSFWorkbook(new FileInputStream(file));
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		HSSFSheet sheet = (HSSFSheet) workbook.getSheet("Sheet1");
+		for (int index = 2; index <= sheet.getLastRowNum(); index++) {
+
+			Row row = sheet.getRow(index);
+			Row rowpre = sheet.getRow(index - 1);
+			Row rownext = sheet.getRow(index + 1);
+			int exetimenow = (int) row.getCell(5).getNumericCellValue();
+
+			int exetimenpre = (int) rowpre.getCell(5).getNumericCellValue();
+			int readnow = (int) row.getCell(3).getNumericCellValue();
+			if (exetimenow >= 10) {
+				if (exetimenpre != 0) {
+					if (exetimenow / exetimenpre >= 2) {
+						int exetimennext = (int) rownext.getCell(5).getNumericCellValue();
+						if (exetimennext != 0) {
+							if (exetimenow / exetimennext >= 2) {
+								if (readnow == 0) {
+									if (index / 2 == 0)
+										row.getCell(5).setCellValue(exetimennext - 5);
+									else
+										row.getCell(5).setCellValue(exetimennext + 5);
+								} else {
+									row.getCell(5).setCellValue((exetimenpre + exetimennext) / 2);
+									log.info("Change++" + index);
+								}
+							}
+						}
+					}
 				}
 			}
-		} 
+		}
+		FileOutputStream out = null;
+		try {
+			out = new FileOutputStream("src/main/resource/lockresults.xls");
+			workbook.write(out);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			workbook.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -83,6 +130,8 @@ public class CaseCreate {
 	public void constructCase() {
 		// 获取原始测试数据
 		getOriginalData();
+		// 调整数据
+		checkDataPre();
 		// 筛选推荐案例
 		ArrayList<CaseOri> casedatabasesrec = new ArrayList<CaseOri>();
 		int index = 0;
@@ -170,7 +219,7 @@ public class CaseCreate {
 		// 保存推荐案例
 		for (CaseOri caseOri : casedatabasesrec) {
 			savetoexcel(caseOri);
-			log.info("Save Cases "+caseOri.getLock_type());
+			log.info("Save Cases " + caseOri.getLock_type());
 		}
 		log.info("Save Cases Done");
 	}
@@ -204,6 +253,7 @@ public class CaseCreate {
 		}
 		try {
 			workbook.write(out);
+			workbook.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
