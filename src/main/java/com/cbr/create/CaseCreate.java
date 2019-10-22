@@ -10,32 +10,34 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.logging.Logger;
 
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.cbr.Case;
 import com.cbr.CaseOri;
 import com.cbr.CaseRec;
 import com.lock.Constant;
+import com.lock.TestInfo;
 
 public class CaseCreate {
-	private static XSSFWorkbook workbook = null;
+	private static HSSFWorkbook workbook = null;
 	private FileOutputStream out = null;
 	private static ArrayList<CaseOri> casedatabasesori = new ArrayList<CaseOri>();
 	private static ArrayList<CaseRec> casedatabasesrec = new ArrayList<CaseRec>();
 	static Logger log = Logger.getLogger("");
 
 	private static void getOriginalData() {
-		File file = new File("src/main/resource/lockresults.xlsx");
+		File file = new File("src/main/resource/lockresults.xls");
 		try {
-			workbook = new XSSFWorkbook(new FileInputStream(file));
+			workbook = new HSSFWorkbook(new FileInputStream(file));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		XSSFSheet sheet = (XSSFSheet) workbook.getSheet("Sheet1");
+		HSSFSheet sheet = (HSSFSheet) workbook.getSheet("Sheet1");
 		for (int index = 1; index <= sheet.getLastRowNum(); index++) {
 			CaseOri casetest = new CaseOri();
 			Row row = sheet.getRow(index);
@@ -62,18 +64,18 @@ public class CaseCreate {
 	/**
 	 * 修改不当数据 对比前后都超过两倍
 	 */
-	private static void checkDataPre() {
+	public static void checkDataPre() {
 
-		File file = new File("src/main/resource/lockresults.xlsx");
+		File file = new File("src/main/resource/lockresults.xls");
 		try {
-			workbook = new XSSFWorkbook(new FileInputStream(file));
+			workbook = new HSSFWorkbook(new FileInputStream(file));
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		XSSFSheet sheet = (XSSFSheet) workbook.getSheet("Sheet1");
+		HSSFSheet sheet = (HSSFSheet) workbook.getSheet("Sheet1");
 		for (int index = 2; index <= sheet.getLastRowNum(); index++) {
 
 			Row row = sheet.getRow(index);
@@ -106,7 +108,7 @@ public class CaseCreate {
 		}
 		FileOutputStream out = null;
 		try {
-			out = new FileOutputStream("src/main/resource/lockresults.xlsx");
+			out = new FileOutputStream("src/main/resource/lockresults.xls");
 			workbook.write(out);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -199,8 +201,7 @@ public class CaseCreate {
 						}
 						casedatabasesrec.add(casedatabasesxuan4.get(0));
 //							casedatabasesxuan4.clear();
-						if (index == 2249)
-							System.out.println("Done");
+						
 						index++;
 						log.info(index + "--Done");
 						// log.info("Done" + casedatabasesxuan4.get(0).getLock_type() + "");
@@ -212,25 +213,25 @@ public class CaseCreate {
 		log.info("All Done");
 		log.info("Save Cases");
 		// 保存推荐案例
-
 		savetoexcel(casedatabasesrec);
 
 		log.info("Save Cases Done");
 	}
 
-	private static void savetoexcel(ArrayList<CaseOri> infos) {
+	public static void savetoexcel(ArrayList<CaseOri> casedatabasesrec) {
 
-		File file = new File("src/main/resource/caseresults.xlsx");
-		
+		File file = new File("src/main/resource/caseresults.xls");
+		FileOutputStream out = null;
 		try {
-			workbook = new XSSFWorkbook(new FileInputStream(file));
+			workbook = new HSSFWorkbook(new FileInputStream(file));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		XSSFSheet sheet = (XSSFSheet) workbook.getSheet("Sheet1");
-		for (CaseOri info : infos) {
+		HSSFSheet sheet = (HSSFSheet) workbook.getSheet("Sheet1");
+		for (CaseOri info : casedatabasesrec) {
+
 			log.info("Save Cases " + info.getLock_type());
 			int rowCount = sheet.getLastRowNum() + 1;
 			Row row = sheet.createRow(rowCount);
@@ -240,11 +241,10 @@ public class CaseCreate {
 			row.createCell(2).setCellValue(info.getNumThreads());
 			row.createCell(3).setCellValue(info.getReadNum());
 			row.createCell(4).setCellValue(info.getNum_operate());
+			// row.createCell(6).setCellValue(info.getOperate_type());
 		}
-		// row.createCell(6).setCellValue(info.getOperate_type());
-		FileOutputStream out = null;
 		try {
-			out = new FileOutputStream(file);
+			out = new FileOutputStream("src/main/resource/caseresults.xls");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

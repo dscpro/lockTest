@@ -6,17 +6,19 @@ public class CaseOri extends Case {
 
 	public CaseOri() {
 	}
-
-	public CaseOri(int numThreads, int readNum, int num_operate, int structure_type,  int lock_type,int exetimes) {
+	/**
+	 * lock_type  structure_type  numThreads  readNum  num_operate
+	 */
+	public CaseOri(int lock_type, int structure_type, int numThreads, int readNum, int num_operate) {
 		super();
 		this.numThreads = numThreads;
 		this.readNum = readNum;
 		this.num_operate = num_operate;
 		this.structure_type = structure_type;
-		 
 		this.lock_type = lock_type;
-		this.exetimes=exetimes;
+		// this.exetimes=exetimes;
 	}
+
 	public int getExetimes() {
 		return exetimes;
 	}

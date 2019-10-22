@@ -2,7 +2,7 @@ package com.cbr;
 
 public class Case {
 	int numThreads;
-	double readNum;
+	int readNum;
 	int num_operate;
 	int structure_type;
 	// int operate_type;
@@ -13,7 +13,7 @@ public class Case {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Case(int numThreads, double readNum, int num_operate, int structure_type, int lock_type) {
+	public Case(int numThreads, int readNum, int num_operate, int structure_type, int lock_type) {
 		super();
 		this.numThreads = numThreads;
 		this.readNum = readNum;
@@ -33,14 +33,11 @@ public class Case {
 	}
 
  
-	public double getReadNum() {
+	public int getReadNum() {
 		return readNum;
 	}
 
-	public void setReadNum(double readNum) {
-		this.readNum = readNum;
-	}
-
+	
 	public void setReadNum(int readNum) {
 		this.readNum = readNum;
 	}

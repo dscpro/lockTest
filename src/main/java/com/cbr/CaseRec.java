@@ -11,7 +11,7 @@ public class CaseRec extends Case {
 	 * @param readNum
 	 * @param num_operate
 	 */
-	public CaseRec(int structure_type,int numThreads, double readNum, int num_operate) {
+	public CaseRec(int structure_type,int numThreads, int readNum, int num_operate) {
 		super();
 		this.numThreads = numThreads;
 		this.readNum = readNum;
@@ -29,3 +29,5 @@ public class CaseRec extends Case {
 	}
 
 }
+
+

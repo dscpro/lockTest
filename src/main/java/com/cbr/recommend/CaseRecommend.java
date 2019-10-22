@@ -11,7 +11,9 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.cbr.CaseBasicMethod;
+import com.cbr.CaseOri;
 import com.cbr.CaseRec;
+import com.cbr.create.CaseCreate;
 
 public class CaseRecommend {
 	private int numTopCases = 10;
@@ -19,6 +21,7 @@ public class CaseRecommend {
 	private ArrayList<CaseRec> casedatabases = CaseBasicMethod.getCaseDatabases();
 	private HashMap<String, Integer> weights = new HashMap<String, Integer>();
 	private CaseLearnRec clr = null;
+
 	/**
 	 * 案例推荐
 	 */
@@ -27,7 +30,7 @@ public class CaseRecommend {
 	}
 
 	/**
-	 * 查找相似案例 默认返回前numTopCases个案例
+	 * 查找相似案例 默认返回前numTopCases个案例（5）
 	 * 
 	 * @param searchcase
 	 * @return 案例及其相似度
@@ -37,6 +40,8 @@ public class CaseRecommend {
 		ArrayList<Map.Entry<Double, CaseRec>> results = new ArrayList<Entry<Double, CaseRec>>();
 		constructWeights(searchcase);
 		double increment = 0.000001;
+		boolean newCase = true;
+		int allmatchlock = 0;
 		for (CaseRec c : casedatabases) {
 			double sim = calculateSimilarity(c, searchcase);
 			// sim += increment;
@@ -48,36 +53,57 @@ public class CaseRecommend {
 			Map.Entry<Double, CaseRec> item = simResults.pollLastEntry();
 			results.add(item);
 		}
+		// 判断是否新案例
+		for (Entry<Double, CaseRec> entry : results) {
+			if (Math.floor(entry.getKey()) == 1) {
+				newCase = false;
+				allmatchlock = entry.getValue().getLock_type();
+				break;
+			}
+		}
+
 		// 判断阈值
 		results = deccase(results, searchcase);
-		return casemultiPros(results);
+		int lockfinal = casemultiPros(results, newCase, allmatchlock);
+		if (newCase)
+			saveNewCase(lockfinal, searchcase);
+		return lockfinal;
 	}
 
 	/**
-	 * 轮盘赌案例最终推荐
+	 * 占比案例最终推荐
 	 */
-	private int casemultiPros(ArrayList<Map.Entry<Double, CaseRec>> results) {
-		int x0 = 0;
-		int x1 = 0;
-		int x2 = 0;
-		int x3 = 0;
+	private int casemultiPros(ArrayList<Map.Entry<Double, CaseRec>> results, boolean newcase, int allmatchlock) {
+
+		TreeMap<Integer, Integer> recResults = new TreeMap<Integer, Integer>();
+		recResults.put(0, 0);
+		recResults.put(1, 0);
+		recResults.put(2, 0);
+		recResults.put(3, 0);
 		for (Entry<Double, CaseRec> entry : results) {
 			switch (entry.getValue().getLock_type()) {
 			case 0:
-				x0++;
+				recResults.put(0, recResults.get(0) + 1);
 				continue;
 			case 1:
-				x1++;
+				recResults.put(1, recResults.get(1) + 1);
 				continue;
 			case 2:
-				x2++;
+				recResults.put(2, recResults.get(2) + 1);
 				continue;
 			case 3:
-				x3++;
+				recResults.put(3, recResults.get(3) + 1);
 				continue;
 			}
 		}
-		int a[] = { x0, x2, x3, x1 };
+
+		// 如果完全匹配
+		if (!newcase) {
+			recResults.put(allmatchlock, recResults.get(allmatchlock) + 2);
+		}
+		int locktype = 0;
+
+		int a[] = { recResults.get(0), recResults.get(1), recResults.get(2), recResults.get(3) };
 		for (int i = 0; i < a.length; i++) {
 			for (int j = 0; j < a.length; j++) {
 				if (a[i] > a[j]) { // 由小到大 第一个最小，最后一个最大
@@ -87,18 +113,26 @@ public class CaseRecommend {
 				}
 			}
 		}
-		int locktype = 0;
-		if (a[0] == x0) {
+		if (a[0] == recResults.get(0)) {
 			locktype = 0;
 		}
-		if (a[0] == x1) {
+		if (a[0] == recResults.get(1)) {
 			locktype = 1;
 		}
-		if (a[0] == x2) {
+		if (a[0] == recResults.get(2)) {
 			locktype = 2;
 		}
-		if (a[0] == x3) {
+		if (a[0] == recResults.get(3)) {
 			locktype = 3;
+		}
+		// 判断是否是最终推荐案例为完全匹配案例
+		if (!newcase) {
+			if (locktype != allmatchlock) {
+				//如果票数未超过3
+				if(recResults.get(locktype)-recResults.get(allmatchlock)<3) {
+					locktype=allmatchlock;
+				}
+			}
 		}
 		return locktype;
 	}
@@ -139,10 +173,14 @@ public class CaseRecommend {
 	}
 
 	/**
-	 * 案例重用
+	 * 新案例保存
 	 */
-	private void reusing() {
-
+	private void saveNewCase(int lock, CaseRec searchcase) {
+		ArrayList<CaseOri> casedatabasesrec = new ArrayList<CaseOri>();
+		CaseOri caseori = new CaseOri(lock, searchcase.getStructure_type(), searchcase.getNumThreads(),
+				searchcase.getReadNum(), searchcase.getNum_operate());
+		casedatabasesrec.add(caseori);
+		CaseCreate.savetoexcel(casedatabasesrec);
 	}
 
 	/**
@@ -159,14 +197,19 @@ public class CaseRecommend {
 		double readNumSim = readNumSimilarity(c, searchcase);
 		double num_operateSim = numOperateSimilarity(c, searchcase);
 		double structure_typeSim = structureTypeSimilarity(c, searchcase);
+		// double operate_structure_typeSim = operateStructureTypeSimilarity(c,
+		// searchcase);
 		int totalWeight = 0;
 		int numThreadsWeight = weights.get("NumThreads");
 		int readNumWeight = weights.get("ReadNum");
 		int numoperateWeight = weights.get("Numoperate");
 		int structuretypeWeight = weights.get("Structuretype");
+		// int operatetypeWeight = weights.get("Operatetype");
+		// int operatestructuretypeWeight = weights.get("Operatestructuretype");
 		totalWeight = totalWeight + numThreadsWeight + readNumWeight + numoperateWeight + structuretypeWeight;
 		totalSim = (numThreadsSim * numThreadsWeight + readNumSim * readNumWeight + num_operateSim * numoperateWeight
-				+ structure_typeSim * structuretypeWeight) / totalWeight;
+				+ structure_typeSim * structuretypeWeight);
+		totalSim = totalSim / totalWeight;
 
 		BigDecimal b = new BigDecimal(totalSim);
 		totalSim = b.setScale(4, java.math.BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -267,7 +310,7 @@ public class CaseRecommend {
 	private double readNumSimilarity(CaseRec c, CaseRec searchcase) {
 		double similarity = 0.0;
 		double readNumscase = c.getReadNum();
-		double readNumsearchcase = searchcase.getReadNum() * searchcase.getNumThreads();
+		double readNumsearchcase = searchcase.getReadNum();
 		similarity = calDistinct(readNumscase, readNumsearchcase);
 		return similarity;
 	}
@@ -288,7 +331,7 @@ public class CaseRecommend {
 	}
 
 	/**
-	 * 计算searchcase相似度
+	 * 计算numOperatecase相似度
 	 * 
 	 * @param c
 	 * @param searchcase
@@ -327,7 +370,7 @@ public class CaseRecommend {
 	private double calDistinct(double caseV, double userV) {
 		double value = 0.0;
 		if (caseV == 0 && userV == 0) {
-			value=1;
+			value = 1;
 		} else {
 			double diff = (double) Math.abs(caseV - userV) / Math.max(caseV, userV);
 			value = 1 - diff;
@@ -340,12 +383,30 @@ public class CaseRecommend {
 	/**
 	 * 构造权重
 	 */
-	private void constructWeights(CaseRec searchcase) {
+	private void constructWeightsByNumThread(CaseRec searchcase) {
+		int numThreadsWeight = 1;
+		int readNumWeight = 1;
+		int num_operateWeight = 1;
+		int structure_typeWeight = 1;
+		if (searchcase.getNumThreads() > 2800 && searchcase.getNumThreads() < 4000) {
+			numThreadsWeight = 5;
+			readNumWeight = 2;
+			num_operateWeight = 5;
+			structure_typeWeight = 4;
+		}
+		if (searchcase.getNumThreads() > 4000 && searchcase.getNumThreads() < 5000) {
+			numThreadsWeight = 8;
+			readNumWeight = 2;
+			num_operateWeight = 8;
+			structure_typeWeight = 7;
+		}
+		if (searchcase.getNumThreads() > 5000) {
+			numThreadsWeight = 12;
+			readNumWeight = 2;
+			num_operateWeight = 8;
+			structure_typeWeight = 10;
+		}
 
-		int numThreadsWeight = 12;
-		int readNumWeight = 2;
-		int num_operateWeight = 8;
-		int structure_typeWeight = 10;
 		// int operate_typeWeight = 3;
 		// int operate_structure_typeWeight = 8;
 
@@ -355,6 +416,17 @@ public class CaseRecommend {
 		weights.put("Structuretype", structure_typeWeight);
 		// weights.put("Operatetype", operate_typeWeight);
 		// weights.put("Operatestructuretype", operate_structure_typeWeight);
+	}
+
+	private void constructWeights(CaseRec searchcase) {
+		int numThreadsWeight = 1;
+		int readNumWeight = 1;
+		int num_operateWeight = 1;
+		int structure_typeWeight = 1;
+		weights.put("NumThreads", numThreadsWeight);
+		weights.put("ReadNum", readNumWeight);
+		weights.put("Numoperate", num_operateWeight);
+		weights.put("Structuretype", structure_typeWeight);
 	}
 
 	public ArrayList<CaseRec> getCasedatabases() {
