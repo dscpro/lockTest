@@ -9,6 +9,7 @@ import java.util.Map;
 import com.lock.Constant;
 import com.lock.DataBasic;
 import com.lock.LockTypePre;
+import com.lock.SaveToExcel;
 import com.lock.TestInfo;
 import com.lock.ThreadStart;
 import com.lock.locktype.LockType;
@@ -16,7 +17,6 @@ import com.lock.locktype.LockType;
 import junit.framework.TestCase;
 
 public class MoreLockTest extends TestCase {
-	
 
 	public static void main(String[] args)
 			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
@@ -25,9 +25,10 @@ public class MoreLockTest extends TestCase {
 		int readNum;
 		int exeNum;
 
-		int[] structure_types = { 1 };
+		int[] structure_types = { 1, 2, 3, 4 };
 		int lock_type;
 		int[] lock = { 0, 1, 2, 3 };
+		ArrayList<TestInfo> lockinfos = new ArrayList<TestInfo>();
 		// int operate_type = 0;
 		// int operate_structure_type = 6;
 		for (int structure_type : structure_types) {
@@ -37,9 +38,6 @@ public class MoreLockTest extends TestCase {
 				for (int numThreadsIndex : Constant.NUM_THREADS) {
 					numThreads = numThreadsIndex;
 					for (int exeTimesIndex : Constant.NUM_EXETIMES) {
-						if (structure_type == 1 && ((numThreadsIndex == 8000 && exeTimesIndex == 8000)
-								|| (numThreadsIndex == 7000 && exeTimesIndex == 8000)))
-							continue;
 						exeNum = exeTimesIndex;
 						for (double readNumIndex : Constant.NUM_READ) {
 							readNum = (int) (readNumIndex * numThreads);
@@ -56,8 +54,12 @@ public class MoreLockTest extends TestCase {
 								}
 
 								LockType locktest = LockTypePre.preLock(listlocktypestr, DataBasic.getDataPre(info));
-								ThreadStart.testLock(info, locktest);
-
+								info = ThreadStart.testLock(info, locktest);
+								lockinfos.add(info);
+								if(lockinfos.size()>=3000) {
+									SaveToExcel.savetoexcel(lockinfos);
+									lockinfos.clear();
+								}
 							}
 						}
 

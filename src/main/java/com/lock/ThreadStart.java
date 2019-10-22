@@ -10,7 +10,7 @@ import com.lock.thread.WriteThread;
 public class ThreadStart {
 	static Logger log = Logger.getLogger("");
 
-	public static void testLock(TestInfo testinfo, LockType test) throws IOException {
+	public static TestInfo testLock(TestInfo testinfo, LockType test) throws IOException {
 		int numThreads = testinfo.getNumThreads();
 		int readNum = testinfo.getReadNum();
 		int exeNum = testinfo.getNum_operate();
@@ -41,6 +41,6 @@ public class ThreadStart {
 		
 		log.info(info+test.getStruct() + " use " + test.getClass().getSimpleName()+" waste time is:" + (endTime - startTime) + "ms");
 		testinfo.setWasteTime(endTime - startTime);
-		SaveToExcel.savetoexcel(testinfo);
+		return testinfo;
 	}
 }

@@ -6,26 +6,24 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class CaseBasicMethod {
 	public static ArrayList<CaseRec> getCaseDatabases() {
 		ArrayList<CaseRec> casedatabases = new ArrayList<CaseRec>();
-		HSSFWorkbook workbook = null;
-		File file = new File("src/main/resource/caseresults.xls");
+		XSSFWorkbook workbook = null;
+		File file = new File("src/main/resource/caseresults.xlsx");
 		try {
-			workbook = new HSSFWorkbook(new FileInputStream(file));
+			workbook = new XSSFWorkbook(new FileInputStream(file));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		HSSFSheet sheet = (HSSFSheet) workbook.getSheet("Sheet1");
+		XSSFSheet sheet = (XSSFSheet) workbook.getSheet("Sheet1");
 
 		for (int index = 1; index <= sheet.getLastRowNum(); index++) {
 			CaseRec casetest = new CaseRec();
@@ -43,7 +41,36 @@ public class CaseBasicMethod {
 
 		return casedatabases;
 	}
-	
+
+	public static ArrayList<CaseRec> getCaseDatabasesByFile(String filename) {
+		ArrayList<CaseRec> casedatabases = new ArrayList<CaseRec>();
+		XSSFWorkbook workbook = null;
+		File file = new File("src/main/resource/"+filename);
+		try {
+			workbook = new XSSFWorkbook(new FileInputStream(file));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		XSSFSheet sheet = (XSSFSheet) workbook.getSheet("Sheet1");
+
+		for (int index = 1; index <= sheet.getLastRowNum(); index++) {
+			CaseRec casetest = new CaseRec();
+			Row row = sheet.getRow(index);
+			// System.out.println(row.getCell(1).getNumericCellValue());
+			casetest.setLock_type((int) row.getCell(0).getNumericCellValue());
+			casetest.setStructure_type((int) row.getCell(1).getNumericCellValue());
+			//casetest.setOperate_structure_type((int) row.getCell(2).getNumericCellValue());
+			casetest.setNumThreads((int) row.getCell(2).getNumericCellValue());
+			casetest.setReadNum((int) row.getCell(3).getNumericCellValue());
+			casetest.setNum_operate((int) row.getCell(4).getNumericCellValue());
+			//casetest.setOperate_type((int) row.getCell(5).getNumericCellValue());
+			casedatabases.add(casetest);
+		}
+
+		return casedatabases;
+	}
 	public static double CaseAttributeSimilarity(CaseRec c, CaseRec userCase, String attribute) {
 		double similarity = 0.0;
 		int caseType = 0;

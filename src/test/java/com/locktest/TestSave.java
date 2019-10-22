@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
@@ -21,7 +22,9 @@ public abstract class TestSave {
 		info.setWasteTime(56);
 		info.setLock_type(0);
 		info.setStructure_type(2);
-		SaveToExcel.savetoexcel(info);
+		ArrayList<TestInfo> infos = new ArrayList<TestInfo>();
+		infos.add(info);
+		SaveToExcel.savetoexcel(infos);
 	}
 
 }

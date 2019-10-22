@@ -23,8 +23,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>3.11</version>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.15</version>
 		</dependency>
 		<dependency>
 			<groupId>ca.mcgill.sable</groupId>
@@ -32,6 +32,11 @@
 			<version>3.3.0</version>
 		</dependency>
 		<dependency>
+			<groupId>com.edwardraff</groupId>
+			<artifactId>JSAT</artifactId>
+			<version>0.0.9</version>
+		</dependency>
+<!-- 		<dependency>
 			<groupId>net.librec</groupId>
 			<artifactId>librec-core</artifactId>
 			<version>2.0.0</version>
@@ -72,7 +77,7 @@
 			<groupId>com.sparkjava</groupId>
 			<artifactId>spark-core</artifactId>
 			<version>2.9.1</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
             <groupId>org.jpmml</groupId>
             <artifactId>pmml-evaluator</artifactId>

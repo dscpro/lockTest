@@ -27,7 +27,7 @@ public class CaseRecommend {
 	}
 
 	/**
-	 * 查找相似案例 默认返回前numTopCases个案例（5）
+	 * 查找相似案例 默认返回前numTopCases个案例
 	 * 
 	 * @param searchcase
 	 * @return 案例及其相似度
@@ -35,7 +35,7 @@ public class CaseRecommend {
 	private int retrieval(CaseRec searchcase) {
 		TreeMap<Double, CaseRec> simResults = new TreeMap<Double, CaseRec>();
 		ArrayList<Map.Entry<Double, CaseRec>> results = new ArrayList<Entry<Double, CaseRec>>();
-		constructWeights();
+		constructWeights(searchcase);
 		double increment = 0.000001;
 		for (CaseRec c : casedatabases) {
 			double sim = calculateSimilarity(c, searchcase);
@@ -159,15 +159,11 @@ public class CaseRecommend {
 		double readNumSim = readNumSimilarity(c, searchcase);
 		double num_operateSim = numOperateSimilarity(c, searchcase);
 		double structure_typeSim = structureTypeSimilarity(c, searchcase);
-		// double operate_structure_typeSim = operateStructureTypeSimilarity(c,
-		// searchcase);
 		int totalWeight = 0;
 		int numThreadsWeight = weights.get("NumThreads");
 		int readNumWeight = weights.get("ReadNum");
 		int numoperateWeight = weights.get("Numoperate");
 		int structuretypeWeight = weights.get("Structuretype");
-		// int operatetypeWeight = weights.get("Operatetype");
-		// int operatestructuretypeWeight = weights.get("Operatestructuretype");
 		totalWeight = totalWeight + numThreadsWeight + readNumWeight + numoperateWeight + structuretypeWeight;
 		totalSim = (numThreadsSim * numThreadsWeight + readNumSim * readNumWeight + num_operateSim * numoperateWeight
 				+ structure_typeSim * structuretypeWeight) / totalWeight;
@@ -344,7 +340,7 @@ public class CaseRecommend {
 	/**
 	 * 构造权重
 	 */
-	private void constructWeights() {
+	private void constructWeights(CaseRec searchcase) {
 
 		int numThreadsWeight = 12;
 		int readNumWeight = 2;
