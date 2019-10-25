@@ -11,12 +11,11 @@ public class CaseOri extends Case {
 	 */
 	public CaseOri(int lock_type, int structure_type, int numThreads, int readNum, int num_operate) {
 		super();
+		this.lock_type = lock_type;
+		this.structure_type = structure_type;
 		this.numThreads = numThreads;
 		this.readNum = readNum;
 		this.num_operate = num_operate;
-		this.structure_type = structure_type;
-		this.lock_type = lock_type;
-		// this.exetimes=exetimes;
 	}
 
 	public int getExetimes() {

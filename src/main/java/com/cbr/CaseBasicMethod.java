@@ -45,7 +45,7 @@ public class CaseBasicMethod {
 	public static ArrayList<CaseRec> getCaseDatabasesByFile(String filename) {
 		ArrayList<CaseRec> casedatabases = new ArrayList<CaseRec>();
 		XSSFWorkbook workbook = null;
-		File file = new File("src/main/resource/"+filename);
+		File file = new File("src/main/resource/"+filename+".xlsx");
 		try {
 			workbook = new XSSFWorkbook(new FileInputStream(file));
 		} catch (FileNotFoundException e) {

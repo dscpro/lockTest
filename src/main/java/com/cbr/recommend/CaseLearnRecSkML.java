@@ -13,9 +13,6 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Row;
 import org.dmg.pmml.FieldName;
 import org.dmg.pmml.PMML;
 import org.jpmml.evaluator.Computable;
@@ -29,7 +26,7 @@ import org.xml.sax.SAXException;
 import com.cbr.CaseOri;
 import com.cbr.CaseRec;
 
-public class CaseLearnRec {
+public class CaseLearnRecSkML {
 
 	/**
 	 * 案例学习
@@ -37,7 +34,7 @@ public class CaseLearnRec {
 	 * @param c
 	 * @return
 	 */
-	public int learncase(CaseRec c) {
+	public static int learncase(CaseRec c) {
 		Evaluator model = loadPmml();
 		int locktype;
 		locktype = predict(model, c.getStructure_type(), c.getNumThreads(), (int) (c.getReadNum() * c.getNumThreads()),
@@ -45,7 +42,7 @@ public class CaseLearnRec {
 		return locktype;
 	}
 
-	private Evaluator loadPmml() {
+	private static Evaluator loadPmml() {
 		PMML pmml = new PMML();
 		InputStream inputStream = null;
 		try {
@@ -77,7 +74,7 @@ public class CaseLearnRec {
 		return evaluator;
 	}
 
-	private int predict(Evaluator evaluator, int a, int b, int c, int d) {
+	private static int predict(Evaluator evaluator, int a, int b, int c, int d) {
 		Map<String, Integer> data = new HashMap<String, Integer>();
 		data.put("x1", a);
 		data.put("x2", b);

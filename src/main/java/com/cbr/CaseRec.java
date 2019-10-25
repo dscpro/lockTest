@@ -13,10 +13,10 @@ public class CaseRec extends Case {
 	 */
 	public CaseRec(int structure_type,int numThreads, int readNum, int num_operate) {
 		super();
+		this.structure_type = structure_type;
 		this.numThreads = numThreads;
 		this.readNum = readNum;
 		this.num_operate = num_operate;
-		this.structure_type = structure_type;
 	}
 
 	public String toString() {

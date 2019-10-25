@@ -17,11 +17,10 @@ import com.cbr.create.CaseCreate;
 
 public class CaseRecommend {
 	private int numTopCases = 10;
-	private double simThreshold = 0.82;
-	private ArrayList<CaseRec> casedatabases = CaseBasicMethod.getCaseDatabases();
+	private double simThreshold = 0.8;
 	private HashMap<String, Integer> weights = new HashMap<String, Integer>();
-	private CaseLearnRec clr = null;
-
+	private ArrayList<CaseRec> casedatabases = CaseBasicMethod.getCaseDatabases();
+	private CaseLearnRecML caseLearnRecML= null;
 	/**
 	 * 案例推荐
 	 */
@@ -30,30 +29,38 @@ public class CaseRecommend {
 	}
 
 	/**
-	 * 查找相似案例 默认返回前numTopCases个案例（5）
+	 * 查找相似案例 默认返回前numTopCases个案例
 	 * 
 	 * @param searchcase
 	 * @return 案例及其相似度
 	 */
 	private int retrieval(CaseRec searchcase) {
+		
 		TreeMap<Double, CaseRec> simResults = new TreeMap<Double, CaseRec>();
 		ArrayList<Map.Entry<Double, CaseRec>> results = new ArrayList<Entry<Double, CaseRec>>();
-		constructWeights(searchcase);
-		double increment = 0.000001;
+		constructWeightsByNumThread(searchcase);
+		double increment = 1 / (casedatabases.size());
 		boolean newCase = true;
 		int allmatchlock = 0;
 		for (CaseRec c : casedatabases) {
-			double sim = calculateSimilarity(c, searchcase);
-			// sim += increment;
-			// increment += 0.000001;
-			// BigDecimal bg = new BigDecimal(sim).setScale(5, RoundingMode.UP);
-			simResults.put(sim, c);
+			//数据结构完全匹配
+			if (c.getStructure_type() == searchcase.getStructure_type()) {
+				double sim = calculateSimilarity(c, searchcase);
+				// key值相同
+				if (simResults.get(sim) != null) {
+					if (c.getLock_type() != simResults.get(sim).getLock_type()) {
+						sim += increment;
+						increment += increment;
+					}
+				}
+				simResults.put(sim, c);
+			}
 		}
 		for (int i = 0; i < numTopCases; i++) {
 			Map.Entry<Double, CaseRec> item = simResults.pollLastEntry();
 			results.add(item);
 		}
-		// 判断是否新案例
+		// 判断是否新案例 完全匹配案例
 		for (Entry<Double, CaseRec> entry : results) {
 			if (Math.floor(entry.getKey()) == 1) {
 				newCase = false;
@@ -64,6 +71,7 @@ public class CaseRecommend {
 
 		// 判断阈值
 		results = deccase(results, searchcase);
+
 		int lockfinal = casemultiPros(results, newCase, allmatchlock);
 		if (newCase)
 			saveNewCase(lockfinal, searchcase);
@@ -102,7 +110,6 @@ public class CaseRecommend {
 			recResults.put(allmatchlock, recResults.get(allmatchlock) + 2);
 		}
 		int locktype = 0;
-
 		int a[] = { recResults.get(0), recResults.get(1), recResults.get(2), recResults.get(3) };
 		for (int i = 0; i < a.length; i++) {
 			for (int j = 0; j < a.length; j++) {
@@ -128,9 +135,9 @@ public class CaseRecommend {
 		// 判断是否是最终推荐案例为完全匹配案例
 		if (!newcase) {
 			if (locktype != allmatchlock) {
-				//如果票数未超过3
-				if(recResults.get(locktype)-recResults.get(allmatchlock)<3) {
-					locktype=allmatchlock;
+				// 如果票数未超过3
+				if (recResults.get(locktype) - recResults.get(allmatchlock) < 3) {
+					locktype = allmatchlock;
 				}
 			}
 		}
@@ -148,6 +155,7 @@ public class CaseRecommend {
 		for (Entry<Double, CaseRec> test : results) {
 			if (test.getKey() < simThreshold) {
 				int locktype = caseLearning(searchcase);
+				int x = test.getValue().getLock_type();
 				test.getValue().setLock_type(locktype);
 				change.put(1 + inc, test.getValue());
 				inc += 0.0000001;
@@ -166,10 +174,10 @@ public class CaseRecommend {
 	 * 案例学习
 	 */
 	private int caseLearning(CaseRec c) {
-		if (clr == null) {
-			clr = new CaseLearnRec();
+		if(caseLearnRecML==null) {
+			caseLearnRecML =new CaseLearnRecML();
 		}
-		return clr.learncase(c);
+		return caseLearnRecML.learncase(c);
 	}
 
 	/**
@@ -211,8 +219,8 @@ public class CaseRecommend {
 				+ structure_typeSim * structuretypeWeight);
 		totalSim = totalSim / totalWeight;
 
-		BigDecimal b = new BigDecimal(totalSim);
-		totalSim = b.setScale(4, java.math.BigDecimal.ROUND_HALF_UP).doubleValue();
+		// BigDecimal b = new BigDecimal(totalSim);
+		// totalSim = b.setScale(1, java.math.BigDecimal.ROUND_HALF_UP).doubleValue();
 		return totalSim;
 	}
 
@@ -326,7 +334,8 @@ public class CaseRecommend {
 		double similarity = 0.0;
 		double structureTypecase = c.getStructure_type();
 		double structureTypesearchcase = searchcase.getStructure_type();
-		similarity = calDistinct(structureTypecase, structureTypesearchcase);
+		if (structureTypecase == structureTypesearchcase)
+			similarity = 1;
 		return similarity;
 	}
 
@@ -369,6 +378,10 @@ public class CaseRecommend {
 	 */
 	private double calDistinct(double caseV, double userV) {
 		double value = 0.0;
+		if (caseV == 0 || userV == 0) {
+			caseV += 1;
+			userV += 1;
+		}
 		if (caseV == 0 && userV == 0) {
 			value = 1;
 		} else {
@@ -429,10 +442,6 @@ public class CaseRecommend {
 		weights.put("Structuretype", structure_typeWeight);
 	}
 
-	public ArrayList<CaseRec> getCasedatabases() {
-		return casedatabases;
-	}
-
 	public void printResults(ArrayList<Map.Entry<Double, CaseRec>> topCases) {
 
 		System.out.println("Here are the top " + numTopCases + " cases: ");
@@ -459,7 +468,4 @@ public class CaseRecommend {
 		}
 	}
 
-	public void setCasedatabases(ArrayList<CaseRec> casedatabases) {
-		this.casedatabases = casedatabases;
-	}
 }
