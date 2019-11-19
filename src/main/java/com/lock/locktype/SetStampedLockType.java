@@ -14,20 +14,26 @@ public class SetStampedLockType extends SetLockType {
 		this.myset = myset;
 	}
 
-	public void iterator() {
+	@Override
+	public Object get(int index) {
 		long stamp = sl.readLock();
 		try {
 			Iterator<Integer> it = myset.iterator();
 			while (it.hasNext()) {
+				if (index == it.next())
+					break;
+				else
+					index = 0;
 				it.next();
-
 			}
 		} finally {
 			sl.unlockRead(stamp);
 		}
+		return index;
 	}
 
-	public boolean add(int newValue) {
+	@Override
+	public boolean insert(Object newValue) {
 		long stamp = sl.writeLock();
 		try {
 			return myset.add(newValue);

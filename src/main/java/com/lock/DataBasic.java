@@ -154,10 +154,10 @@ public class DataBasic {
 	}
 
 	public static Object setHashMapDataPre(String structure_type, int opnum) {
-		Map<Integer, Integer> dataMap = new HashMap<Integer, Integer>();
+		Map<String, Integer> dataMap = new HashMap<String, Integer>();
 
 		for (int i = 0; i < opnum; i++) {
-			dataMap.put(i * opnum, i);
+			dataMap.put(i +"i", i);
 		}
 
 		return dataMap;

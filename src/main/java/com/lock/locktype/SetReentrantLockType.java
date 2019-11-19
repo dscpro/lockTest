@@ -15,21 +15,27 @@ public class SetReentrantLockType extends SetLockType {
 		this.myset = myset;
 	}
 
-	public void iterator() {
+	@Override
+	public Object get(int index) {
 		lock.lock();
 		try {
 			Iterator<Integer> it = myset.iterator();
 
 			while (it.hasNext()) {
+				if (index == it.next())
+					break;
+				else
+					index=0;
 				it.next();
-
 			}
 		} finally {
 			lock.unlock();
 		}
+		return index;
 	}
 
-	public boolean add(int newValue) {
+	@Override
+	public boolean insert(Object newValue) {
 		lock.lock();
 
 		try {

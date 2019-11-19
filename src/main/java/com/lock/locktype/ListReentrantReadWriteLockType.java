@@ -16,6 +16,7 @@ public class ListReentrantReadWriteLockType extends ListLockType {
 	public ListReentrantReadWriteLockType(List myList) {
 		this.list = myList;
 	}
+	 @Override
 	public Object get(int index) {
 		readLock.lock();
 		try {
@@ -24,7 +25,7 @@ public class ListReentrantReadWriteLockType extends ListLockType {
 			readLock.unlock();
 		}
 	}
-
+	 @Override
 	public boolean insert(Object newValue) {
 		writeLock.lock();
 		try {

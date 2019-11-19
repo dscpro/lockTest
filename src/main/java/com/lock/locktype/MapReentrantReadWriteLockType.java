@@ -13,11 +13,12 @@ public class MapReentrantReadWriteLockType extends MapLockType {
 	public MapReentrantReadWriteLockType() {
 	}
 
-	public MapReentrantReadWriteLockType(Map<Integer, Integer> myMap) {
+	public MapReentrantReadWriteLockType(Map myMap) {
 		this.myMap = myMap;
 	}
 
-	public Object get(Integer key) {
+	@Override
+	public Object get(int key) {
 		readLock.lock();
 		try {
 			return myMap.get(key);
@@ -26,12 +27,17 @@ public class MapReentrantReadWriteLockType extends MapLockType {
 		}
 	}
 
-	public void put(Integer key, Integer value) {
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean insert(Object value) {
+		boolean flag = false;
 		writeLock.lock();
+
 		try {
-			myMap.put(key, value);
+			flag = myMap.put(value+"i", value) != null;
 		} finally {
 			writeLock.unlock();
 		}
+		return flag;
 	}
 }

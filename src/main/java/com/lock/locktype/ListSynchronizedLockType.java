@@ -9,11 +9,11 @@ public class ListSynchronizedLockType extends ListLockType {
 	public ListSynchronizedLockType(List myList) {
 		this.list = myList;
 	}
-
+	 @Override
 	public synchronized Object get(int index) {
 		return list.get(index);
 	}
-
+	 @Override
 	public synchronized boolean insert(Object newValue) {
 		return list.add(newValue);
 	}

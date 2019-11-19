@@ -13,7 +13,7 @@ public class ListStampedLockType extends ListLockType {
 	public ListStampedLockType(List myList) {
 		this.list = myList;
 	}
-
+	 @Override
 	public Object get(int index) {
 		long stamp = sl.readLock();
 		try {
@@ -22,7 +22,7 @@ public class ListStampedLockType extends ListLockType {
 			sl.unlockRead(stamp);
 		}
 	}
-
+	 @Override
 	public boolean insert(Object newValue) {
 
 		long stamp = sl.writeLock();

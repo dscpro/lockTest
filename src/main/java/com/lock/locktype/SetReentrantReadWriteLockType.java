@@ -18,21 +18,27 @@ public class SetReentrantReadWriteLockType extends SetLockType {
 		this.myset = myset;
 	}
 
-	public void iterator() {
+	@Override
+	public Object get(int index) {
 		readLock.lock();
 		try {
 			Iterator<Integer> it = myset.iterator();
 
 			while (it.hasNext()) {
+				if (index == it.next())
+					break;
+				else
+					index = 0;
 				it.next();
-
 			}
 		} finally {
 			readLock.unlock();
 		}
+		return index;
 	}
 
-	public boolean add(int newValue) {
+	@Override
+	public boolean insert(Object newValue) {
 		writeLock.lock();
 
 		try {

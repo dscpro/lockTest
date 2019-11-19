@@ -6,15 +6,15 @@ public class MapSynchronizedLockType extends MapLockType {
 	public MapSynchronizedLockType() {
 	}
 
-	public MapSynchronizedLockType(Map<Integer, Integer> myMap) {
+	public MapSynchronizedLockType(Map myMap) {
 		this.myMap = myMap;
 	}
-
-	public synchronized Object get(Integer key) {
+	@Override
+	public synchronized Object get(int key) {
 		return myMap.get(key);
 	}
-
-	public synchronized void put(Integer key, Integer value) {
-		myMap.put(key, value);
+	@Override
+	public synchronized boolean insert(Object value) {
+		return myMap.put(value+"i", value) != null;
 	}
 }

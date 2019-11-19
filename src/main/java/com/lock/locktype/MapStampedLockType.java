@@ -9,11 +9,12 @@ public class MapStampedLockType extends MapLockType {
 	public MapStampedLockType() {
 	}
 
-	public MapStampedLockType(Map<Integer, Integer> myMap) {
+	public MapStampedLockType(Map myMap) {
 		this.myMap = myMap;
 	}
 
-	public Object get(Integer key) {
+	@Override
+	public Object get(int key) {
 		long stamp = sl.readLock();
 		try {
 			return myMap.get(key);
@@ -22,13 +23,15 @@ public class MapStampedLockType extends MapLockType {
 		}
 	}
 
-	public void put(Integer key, Integer value) {
-
+	@Override
+	public boolean insert(Object value) {
+		boolean flag = false;
 		long stamp = sl.writeLock();
 		try {
-			myMap.put(key, value);
+			flag = myMap.put(value+"i", value) != null;
 		} finally {
 			sl.unlockWrite(stamp);
 		}
+		return flag;
 	}
 }

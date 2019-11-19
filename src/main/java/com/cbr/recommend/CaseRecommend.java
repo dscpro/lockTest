@@ -1,10 +1,9 @@
 package com.cbr.recommend;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -17,14 +16,16 @@ import com.cbr.create.CaseCreate;
 
 public class CaseRecommend {
 	private int numTopCases = 10;
-	private double simThreshold = 0.8;
+	private double simThreshold = 0.9;
 	private HashMap<String, Integer> weights = new HashMap<String, Integer>();
 	private ArrayList<CaseRec> casedatabases = CaseBasicMethod.getCaseDatabases();
-	private CaseLearnRecML caseLearnRecML= null;
+	private CaseLearnRecML caseLearnRecML = null;
+
 	/**
 	 * 案例推荐
 	 */
 	public int caseRecommend(CaseRec searchcase) {
+
 		return retrieval(searchcase);
 	}
 
@@ -35,7 +36,6 @@ public class CaseRecommend {
 	 * @return 案例及其相似度
 	 */
 	private int retrieval(CaseRec searchcase) {
-		
 		TreeMap<Double, CaseRec> simResults = new TreeMap<Double, CaseRec>();
 		ArrayList<Map.Entry<Double, CaseRec>> results = new ArrayList<Entry<Double, CaseRec>>();
 		constructWeightsByNumThread(searchcase);
@@ -43,7 +43,7 @@ public class CaseRecommend {
 		boolean newCase = true;
 		int allmatchlock = 0;
 		for (CaseRec c : casedatabases) {
-			//数据结构完全匹配
+			// 数据结构完全匹配
 			if (c.getStructure_type() == searchcase.getStructure_type()) {
 				double sim = calculateSimilarity(c, searchcase);
 				// key值相同
@@ -68,10 +68,8 @@ public class CaseRecommend {
 				break;
 			}
 		}
-
 		// 判断阈值
 		results = deccase(results, searchcase);
-
 		int lockfinal = casemultiPros(results, newCase, allmatchlock);
 		if (newCase)
 			saveNewCase(lockfinal, searchcase);
@@ -107,7 +105,7 @@ public class CaseRecommend {
 
 		// 如果完全匹配
 		if (!newcase) {
-			recResults.put(allmatchlock, recResults.get(allmatchlock) + 2);
+			recResults.put(allmatchlock, recResults.get(allmatchlock) + 1);
 		}
 		int locktype = 0;
 		int a[] = { recResults.get(0), recResults.get(1), recResults.get(2), recResults.get(3) };
@@ -135,8 +133,8 @@ public class CaseRecommend {
 		// 判断是否是最终推荐案例为完全匹配案例
 		if (!newcase) {
 			if (locktype != allmatchlock) {
-				// 如果票数未超过3
-				if (recResults.get(locktype) - recResults.get(allmatchlock) < 3) {
+				// 如果票数未超过
+				if (recResults.get(locktype) - recResults.get(allmatchlock) < 1) {
 					locktype = allmatchlock;
 				}
 			}
@@ -174,9 +172,11 @@ public class CaseRecommend {
 	 * 案例学习
 	 */
 	private int caseLearning(CaseRec c) {
-		if(caseLearnRecML==null) {
-			caseLearnRecML =new CaseLearnRecML();
+
+		if (caseLearnRecML == null) {
+			caseLearnRecML = new CaseLearnRecML();
 		}
+
 		return caseLearnRecML.learncase(c);
 	}
 
@@ -440,6 +440,26 @@ public class CaseRecommend {
 		weights.put("ReadNum", readNumWeight);
 		weights.put("Numoperate", num_operateWeight);
 		weights.put("Structuretype", structure_typeWeight);
+	}
+
+	public void printLock(int lock) {
+		String name = "";
+		switch (lock) {
+		case 0:
+			name = "ReentrantReadWriteLock";
+			break;
+		case 1:
+			name = "ReentrantLock";
+			break;
+		case 2:
+			name = "StampedLock";
+			break;
+		case 3:
+			name = "Synchronized";
+			break;
+
+		}
+		System.out.println("The Recommend Lock is :" + name);
 	}
 
 	public void printResults(ArrayList<Map.Entry<Double, CaseRec>> topCases) {

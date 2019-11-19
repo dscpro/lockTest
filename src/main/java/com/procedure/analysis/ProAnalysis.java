@@ -35,10 +35,9 @@ public class ProAnalysis {
 	protected static void getClassUnderDir() {
 		Scene.v().loadClass(className, SootClass.BODIES).setApplicationClass();
 	}
-
 	protected static void getAttribute() {
 		for (SootClass clz : Scene.v().getApplicationClasses()) {
-			System.out.println(clz.getName());
+			//System.out.println(clz.getName());
 			Object object = null;
 			try {
 				object = Class.forName(clz.getName()).newInstance();
@@ -64,9 +63,7 @@ public class ProAnalysis {
 					} catch (IllegalAccessException e) {
 						e.printStackTrace();
 					}
-
 				}
-
 			}
 		}
 
@@ -88,7 +85,7 @@ public class ProAnalysis {
 					while (it.hasNext()) {
 						Unit tmpUnit = it.next();
 						if (tmpUnit.branches()) {
-							System.out.println("the branch is :" + tmpUnit.toString());
+							//System.out.println("the branch is :" + tmpUnit.toString());
 							List<Unit> us = g.getSuccsOf(tmpUnit);
 							Iterator<Unit> i = us.iterator();
 							while (i.hasNext()) {
@@ -101,7 +98,6 @@ public class ProAnalysis {
 					}
 				}
 			}
-
 		}
 
 	}
@@ -126,9 +122,8 @@ public class ProAnalysis {
 		// cp.append(".");
 		// 这里加载的时候 路径名应该缺少包名
 		cp.append(File.pathSeparator + "/home/dsc/git/lockTest/src/test/java/");
-
-		cp.append(File.pathSeparator + "/home/dsc/java/jdk1.8.0_211/jre/lib/rt.jar" + File.pathSeparator
-				+ "/home/dsc/java/jdk1.8.0_211/jre/lib/jce.jar");
+		cp.append(File.pathSeparator + "/usr/java/jdk1.8.0_211/jre/lib/rt.jar" + File.pathSeparator
+				+ "/usr/java/jdk1.8.0_211/jre/lib/jce.jar");
 		System.setProperty("soot.class.path", cp.toString());
 
 	}

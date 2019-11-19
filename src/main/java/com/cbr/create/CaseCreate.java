@@ -95,10 +95,13 @@ public class CaseCreate {
 						if (exetimennext != 0) {
 							if (exetimenow / exetimennext >= 2) {
 								if (readnow == 0) {
-									if (index / 2 == 0)
+									if (index / 2 == 0) {
 										row.getCell(5).setCellValue(exetimennext - 5);
-									else
+										log.info("Change++" + index);
+									} else {
 										row.getCell(5).setCellValue(exetimennext + 5);
+										log.info("Change++" + index);
+									}
 								} else {
 									row.getCell(5).setCellValue((exetimenpre + exetimennext) / 2);
 									log.info("Change++" + index);
@@ -204,7 +207,7 @@ public class CaseCreate {
 						}
 						casedatabasesrec.add(casedatabasesxuan4.get(0));
 //							casedatabasesxuan4.clear();
-						
+
 						index++;
 						log.info(index + "--Done");
 						// log.info("Done" + casedatabasesxuan4.get(0).getLock_type() + "");
@@ -262,14 +265,17 @@ public class CaseCreate {
 
 		}
 	}
+
 	/**
 	 * 创建决策树模型
 	 */
 	public static void createModel(ArrayList<CaseRec> casedatabasesrec) {
+		Collections.shuffle(casedatabasesrec);
 		CaseLearnRecML.initiallearncaseML(casedatabasesrec);
 	}
+
 	/**
-	 *判断存在决策树模型
+	 * 判断存在决策树模型
 	 */
 	public static int ifModel() {
 		return CaseLearnRecML.ifModel();

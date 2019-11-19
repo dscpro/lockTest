@@ -3,12 +3,14 @@ package com.lock.locktype;
 import java.util.Map;
 
 public class MapLockType implements LockType {
-	protected Map<Integer, Integer> myMap;
+	protected Map  myMap;
 
+	@Override
 	public Object get(int index) {
 		return null;
 	}
 
+	@Override
 	public boolean insert(Object newValue) {
 		return false;
 	}
@@ -18,7 +20,7 @@ public class MapLockType implements LockType {
 	}
 
 	public void setOperateType(Object obj) {
-		this.myMap = (Map<Integer, Integer>) obj;
+		this.myMap = (Map) obj;
 	}
 
 }

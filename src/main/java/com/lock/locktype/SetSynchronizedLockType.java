@@ -11,14 +11,21 @@ public class SetSynchronizedLockType extends SetLockType {
 		this.myset = myset;
 	}
 
-	public synchronized void iterator() {
+	@Override
+	public synchronized Object get(int index) {
 		Iterator<Integer> it = myset.iterator();
 		while (it.hasNext()) {
+			if (index == it.next())
+				break;
+			else
+				index = 0;
 			it.next();
 		}
+		return index;
 	}
 
-	public synchronized boolean add(int newValue) {
+	@Override
+	public synchronized boolean insert(Object newValue) {
 		return myset.add(newValue);
 	}
 }

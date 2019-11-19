@@ -14,7 +14,7 @@ public class ListReentrantLockType extends ListLockType {
 	public ListReentrantLockType(List myList) {
 		this.list = myList;
 	}
-
+	 @Override
 	public Object get(int index) {
 		lock.lock();
 		try {
@@ -23,7 +23,7 @@ public class ListReentrantLockType extends ListLockType {
 			lock.unlock();
 		}
 	}
-
+	 @Override
 	public boolean insert(Object newValue) {
 		lock.lock();
 		try {

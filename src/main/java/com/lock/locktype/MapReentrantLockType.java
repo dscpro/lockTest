@@ -10,11 +10,12 @@ public class MapReentrantLockType extends MapLockType {
 	public MapReentrantLockType() {
 	}
 
-	public MapReentrantLockType(Map<Integer, Integer> myMap) {
+	public MapReentrantLockType(Map myMap) {
 		this.myMap = myMap;
 	}
 
-	public Object get(Integer key) {
+	@Override
+	public Object get(int key) {
 		lock.lock();
 		try {
 			return myMap.get(key);
@@ -23,13 +24,15 @@ public class MapReentrantLockType extends MapLockType {
 		}
 	}
 
-	public void put(Integer key, Integer value) {
-
+	@Override
+	public boolean insert(Object value) {
+		boolean flag = false;
 		lock.lock();
 		try {
-			myMap.put(key, value);
+			flag=myMap.put(value+"i", value) != null;
 		} finally {
 			lock.unlock();
 		}
+		return flag;
 	}
 }
